@@ -1,6 +1,6 @@
 # Initial verification record
 
-Date: November 2, 2026. Environment: Windows, Python 3.9.13. This record distinguishes automated harness checks from model quality. It is not a performance benchmark or a claim of production readiness.
+Date: November 2, 2026. Environment: Windows, Python 3.9.13. This section preserves the initial setup results. Subsequent review comparisons are documented in [the harder benchmark](hard-benchmark.md). Harness checks and model-quality measurements are distinct; neither establishes production readiness.
 
 ## Automated checks
 
@@ -26,7 +26,7 @@ A targeted live evaluation then completed successfully: `python -m harness_lab e
 
 ## Measured improvement
 
-Improvement over an author-only baseline is **unknown**. No controlled baseline comparison has been run. Unknown is not a measured zero-percent gain.
+Improvement in final designs over an author-only baseline is **unknown**. No baseline comparison had been run at this initial verification point. Later reviewer comparisons do not measure final design quality. Unknown is not a measured zero-percent gain.
 
 | Observation | Result | Interpretation |
 | --- | --- | --- |

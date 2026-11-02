@@ -1,0 +1,1575 @@
+{
+  "experiment": "20261102T214129Z-hard-benchmark-08d57462",
+  "date": "2026-11-02",
+  "timezone": "America/Toronto",
+  "protocol": {
+    "mode": "live",
+    "requested_model": "gpt-oss-120b",
+    "trials": 1,
+    "created_before_requests": true,
+    "source_sha256": {
+      "examples/hard-evaluation.json": "dd16e2f64780fddfdf02c4136869b64d37c421e84f5df063e0bbf81289d38b81",
+      "benchmarks/hard_cases.py": "50f3136910455ff3403ba45754ab2476997256e6307ee3b5c668d90e5036ab5d",
+      "benchmarks/grading.py": "122c267ec12169af19996e7f51c80d04d464f084d1d8820d4e3fc717cfa36b49",
+      "scripts/run_hard_benchmark.py": "b6f0a39dad13dc68d89b0b8d258621b031d893d472717e92c0a7a422311aeea6",
+      "harness_lab/prompts.py": "7f51bbe1604cc84f3571159d330d56309ec69f6d42be13d231f38eba6d701aeb",
+      "harness_lab/contracts.py": "92b406cdaf0f0bfad35f37f6af538fa736225b75709b53c7eb73c4f8beabb681",
+      "harness_lab/runtime.py": "b98f573ef39ed0a0ea2e2ea4ca7a7b07dbbb190ea30885a22b21c061db56f17e",
+      "harness_lab/client.py": "9f34ba23f711fa5a683d369f4be54dd6d476696369e46700034c555b4cac9f4f"
+    },
+    "schedule": [
+      [
+        "case-26",
+        1,
+        "generic_two"
+      ],
+      [
+        "case-26",
+        1,
+        "egm_two"
+      ],
+      [
+        "case-17",
+        1,
+        "egm_two"
+      ],
+      [
+        "case-17",
+        1,
+        "generic_two"
+      ],
+      [
+        "case-91",
+        1,
+        "generic_two"
+      ],
+      [
+        "case-91",
+        1,
+        "egm_two"
+      ],
+      [
+        "case-43",
+        1,
+        "egm_two"
+      ],
+      [
+        "case-43",
+        1,
+        "generic_two"
+      ],
+      [
+        "case-82",
+        1,
+        "generic_two"
+      ],
+      [
+        "case-82",
+        1,
+        "egm_two"
+      ],
+      [
+        "case-65",
+        1,
+        "egm_two"
+      ],
+      [
+        "case-65",
+        1,
+        "generic_two"
+      ]
+    ],
+    "arms": {
+      "generic_one": "First sample of generic_two; not an independent replicate.",
+      "generic_two": "Two independent strong generic reviews; same schema, references, limits, and validation as EGM.",
+      "egm_two": "Existing unmodified comprehension and design-critic runtime, max_revisions=0."
+    },
+    "primary_metric": "Detected planted flaws in completed reviews / all planted flaws. A failed review delivers zero verified detections and remains in the denominator.",
+    "grading": "Predeclared evidence localization plus conjunctive causal-concept patterns; matches are diagnostic and need semantic audit. No model judge sees the labels.",
+    "controls": "Three defective/corrected pairs. Major findings on corrected controls are false-positive candidates, not automatically errors.",
+    "budgets": "Two-call arms have equal logical call and output-token limits, not equal actual input/output tokens. Corrections and retries consume budget.",
+    "limitations": "Synthetic cases, constructed for this experiment; one trial by default; no population-level accuracy or significance claim. Providers may vary under the pinned model group and are recorded.",
+    "exclusions": "No failed or unfavorable case is dropped. No dataset, prompt, or grader tuning after generation starts."
+  },
+  "metrics": {
+    "generic_one": {
+      "case_trials": 6,
+      "completed": 6,
+      "completion_percent": 100.0,
+      "expected_defects": 6,
+      "detected_defects": 6,
+      "delivered_detection_percent": 100.0,
+      "completed_clean_controls": 3,
+      "controls_with_major_alerts": 3,
+      "clean_control_major_alert_percent": 100.0,
+      "http_attempts": 8,
+      "reported_total_tokens": 19845,
+      "validation_errors": 2
+    },
+    "generic_two": {
+      "case_trials": 6,
+      "completed": 6,
+      "completion_percent": 100.0,
+      "expected_defects": 6,
+      "detected_defects": 6,
+      "delivered_detection_percent": 100.0,
+      "completed_clean_controls": 3,
+      "controls_with_major_alerts": 3,
+      "clean_control_major_alert_percent": 100.0,
+      "http_attempts": 14,
+      "reported_total_tokens": 35329,
+      "validation_errors": 2
+    },
+    "egm_two": {
+      "case_trials": 6,
+      "completed": 6,
+      "completion_percent": 100.0,
+      "expected_defects": 6,
+      "detected_defects": 6,
+      "delivered_detection_percent": 100.0,
+      "completed_clean_controls": 3,
+      "controls_with_major_alerts": 3,
+      "clean_control_major_alert_percent": 100.0,
+      "http_attempts": 14,
+      "reported_total_tokens": 53620,
+      "validation_errors": 2
+    }
+  },
+  "repairs": {
+    "invocations": 24,
+    "first_valid": 20,
+    "final_valid": 24,
+    "repaired": 4,
+    "rows": [
+      {
+        "case": "case-17",
+        "directory": "case-17-trial-1-egm_two",
+        "role": "comprehension",
+        "first_valid": false,
+        "final_valid": true,
+        "repaired": true,
+        "http_errors": 0,
+        "routing": [
+          "cloudflare/@cf/openai/gpt-oss-120b",
+          "groq/openai/gpt-oss-120b"
+        ]
+      },
+      {
+        "case": "case-17",
+        "directory": "case-17-trial-1-egm_two",
+        "role": "design_critic",
+        "first_valid": true,
+        "final_valid": true,
+        "repaired": false,
+        "http_errors": 0,
+        "routing": [
+          "groq/openai/gpt-oss-120b"
+        ]
+      },
+      {
+        "case": "case-17",
+        "directory": "case-17-trial-1-generic_two",
+        "role": "generic_1",
+        "first_valid": false,
+        "final_valid": true,
+        "repaired": true,
+        "http_errors": 0,
+        "routing": [
+          "groq/openai/gpt-oss-120b"
+        ]
+      },
+      {
+        "case": "case-17",
+        "directory": "case-17-trial-1-generic_two",
+        "role": "generic_2",
+        "first_valid": true,
+        "final_valid": true,
+        "repaired": false,
+        "http_errors": 0,
+        "routing": [
+          "groq/openai/gpt-oss-120b"
+        ]
+      },
+      {
+        "case": "case-26",
+        "directory": "case-26-trial-1-egm_two",
+        "role": "comprehension",
+        "first_valid": true,
+        "final_valid": true,
+        "repaired": false,
+        "http_errors": 0,
+        "routing": [
+          "groq/openai/gpt-oss-120b"
+        ]
+      },
+      {
+        "case": "case-26",
+        "directory": "case-26-trial-1-egm_two",
+        "role": "design_critic",
+        "first_valid": true,
+        "final_valid": true,
+        "repaired": false,
+        "http_errors": 0,
+        "routing": [
+          "cloudflare/@cf/openai/gpt-oss-120b"
+        ]
+      },
+      {
+        "case": "case-26",
+        "directory": "case-26-trial-1-generic_two",
+        "role": "generic_1",
+        "first_valid": true,
+        "final_valid": true,
+        "repaired": false,
+        "http_errors": 0,
+        "routing": [
+          "groq/openai/gpt-oss-120b"
+        ]
+      },
+      {
+        "case": "case-26",
+        "directory": "case-26-trial-1-generic_two",
+        "role": "generic_2",
+        "first_valid": true,
+        "final_valid": true,
+        "repaired": false,
+        "http_errors": 0,
+        "routing": [
+          "groq/openai/gpt-oss-120b"
+        ]
+      },
+      {
+        "case": "case-43",
+        "directory": "case-43-trial-1-egm_two",
+        "role": "comprehension",
+        "first_valid": true,
+        "final_valid": true,
+        "repaired": false,
+        "http_errors": 0,
+        "routing": [
+          "groq/openai/gpt-oss-120b"
+        ]
+      },
+      {
+        "case": "case-43",
+        "directory": "case-43-trial-1-egm_two",
+        "role": "design_critic",
+        "first_valid": true,
+        "final_valid": true,
+        "repaired": false,
+        "http_errors": 0,
+        "routing": [
+          "cloudflare/@cf/openai/gpt-oss-120b"
+        ]
+      },
+      {
+        "case": "case-43",
+        "directory": "case-43-trial-1-generic_two",
+        "role": "generic_1",
+        "first_valid": true,
+        "final_valid": true,
+        "repaired": false,
+        "http_errors": 0,
+        "routing": [
+          "groq/openai/gpt-oss-120b"
+        ]
+      },
+      {
+        "case": "case-43",
+        "directory": "case-43-trial-1-generic_two",
+        "role": "generic_2",
+        "first_valid": true,
+        "final_valid": true,
+        "repaired": false,
+        "http_errors": 0,
+        "routing": [
+          "groq/openai/gpt-oss-120b"
+        ]
+      },
+      {
+        "case": "case-65",
+        "directory": "case-65-trial-1-egm_two",
+        "role": "comprehension",
+        "first_valid": false,
+        "final_valid": true,
+        "repaired": true,
+        "http_errors": 0,
+        "routing": [
+          "cloudflare/@cf/openai/gpt-oss-120b",
+          "groq/openai/gpt-oss-120b"
+        ]
+      },
+      {
+        "case": "case-65",
+        "directory": "case-65-trial-1-egm_two",
+        "role": "design_critic",
+        "first_valid": true,
+        "final_valid": true,
+        "repaired": false,
+        "http_errors": 0,
+        "routing": [
+          "groq/openai/gpt-oss-120b"
+        ]
+      },
+      {
+        "case": "case-65",
+        "directory": "case-65-trial-1-generic_two",
+        "role": "generic_1",
+        "first_valid": false,
+        "final_valid": true,
+        "repaired": true,
+        "http_errors": 0,
+        "routing": [
+          "groq/openai/gpt-oss-120b"
+        ]
+      },
+      {
+        "case": "case-65",
+        "directory": "case-65-trial-1-generic_two",
+        "role": "generic_2",
+        "first_valid": true,
+        "final_valid": true,
+        "repaired": false,
+        "http_errors": 0,
+        "routing": [
+          "groq/openai/gpt-oss-120b"
+        ]
+      },
+      {
+        "case": "case-82",
+        "directory": "case-82-trial-1-egm_two",
+        "role": "comprehension",
+        "first_valid": true,
+        "final_valid": true,
+        "repaired": false,
+        "http_errors": 0,
+        "routing": [
+          "groq/openai/gpt-oss-120b"
+        ]
+      },
+      {
+        "case": "case-82",
+        "directory": "case-82-trial-1-egm_two",
+        "role": "design_critic",
+        "first_valid": true,
+        "final_valid": true,
+        "repaired": false,
+        "http_errors": 0,
+        "routing": [
+          "cloudflare/@cf/openai/gpt-oss-120b"
+        ]
+      },
+      {
+        "case": "case-82",
+        "directory": "case-82-trial-1-generic_two",
+        "role": "generic_1",
+        "first_valid": true,
+        "final_valid": true,
+        "repaired": false,
+        "http_errors": 0,
+        "routing": [
+          "groq/openai/gpt-oss-120b"
+        ]
+      },
+      {
+        "case": "case-82",
+        "directory": "case-82-trial-1-generic_two",
+        "role": "generic_2",
+        "first_valid": true,
+        "final_valid": true,
+        "repaired": false,
+        "http_errors": 0,
+        "routing": [
+          "groq/openai/gpt-oss-120b"
+        ]
+      },
+      {
+        "case": "case-91",
+        "directory": "case-91-trial-1-egm_two",
+        "role": "comprehension",
+        "first_valid": true,
+        "final_valid": true,
+        "repaired": false,
+        "http_errors": 0,
+        "routing": [
+          "groq/openai/gpt-oss-120b"
+        ]
+      },
+      {
+        "case": "case-91",
+        "directory": "case-91-trial-1-egm_two",
+        "role": "design_critic",
+        "first_valid": true,
+        "final_valid": true,
+        "repaired": false,
+        "http_errors": 0,
+        "routing": [
+          "cloudflare/@cf/openai/gpt-oss-120b"
+        ]
+      },
+      {
+        "case": "case-91",
+        "directory": "case-91-trial-1-generic_two",
+        "role": "generic_1",
+        "first_valid": true,
+        "final_valid": true,
+        "repaired": false,
+        "http_errors": 0,
+        "routing": [
+          "groq/openai/gpt-oss-120b"
+        ]
+      },
+      {
+        "case": "case-91",
+        "directory": "case-91-trial-1-generic_two",
+        "role": "generic_2",
+        "first_valid": true,
+        "final_valid": true,
+        "repaired": false,
+        "http_errors": 0,
+        "routing": [
+          "groq/openai/gpt-oss-120b"
+        ]
+      }
+    ]
+  },
+  "rows": [
+    {
+      "case": "case-26",
+      "family": "worker",
+      "trial": 1,
+      "arm": "generic_one",
+      "completed": true,
+      "status": "needs_attention",
+      "expected": 0,
+      "detected": 0,
+      "matches": {},
+      "major_findings": 1,
+      "attempts": 1,
+      "total_tokens": 2653,
+      "resolved_models": [
+        "openai/gpt-oss-120b"
+      ],
+      "validation_errors": 0,
+      "findings": [
+        {
+          "severity": "major",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "Retry bookkeeping is persisted after the sender starts an attempt.",
+          "issue": "If the sender crashes after sending a callback but before persisting the attempt record, the attempt count may not be incremented, allowing unbounded retries and violating the five\u2011attempt limit.",
+          "recommendation": "Persist the attempt count (or mark the outbox row as \"in\u2011flight\") before sending the callback, and update the row atomically after a successful send or failure handling.",
+          "persona": "generic_1"
+        },
+        {
+          "severity": "nit",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "inserts a unique completion notice for job_id",
+          "issue": "The design mentions a \"unique\" notice but does not specify a database uniqueness constraint, leaving room for duplicate rows under race conditions.",
+          "recommendation": "Add a unique index on the outbox table for job_id (or a composite key) and handle duplicate\u2011key errors gracefully.",
+          "persona": "generic_1"
+        }
+      ],
+      "validation_details": []
+    },
+    {
+      "case": "case-26",
+      "family": "worker",
+      "trial": 1,
+      "arm": "generic_two",
+      "completed": true,
+      "status": "needs_attention",
+      "expected": 0,
+      "detected": 0,
+      "matches": {},
+      "major_findings": 2,
+      "attempts": 2,
+      "total_tokens": 5586,
+      "resolved_models": [
+        "openai/gpt-oss-120b"
+      ],
+      "validation_errors": 0,
+      "elapsed_seconds": 64.06,
+      "findings": [
+        {
+          "severity": "major",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "Retry bookkeeping is persisted after the sender starts an attempt.",
+          "issue": "If the sender crashes after sending a callback but before persisting the attempt record, the attempt count may not be incremented, allowing unbounded retries and violating the five\u2011attempt limit.",
+          "recommendation": "Persist the attempt count (or mark the outbox row as \"in\u2011flight\") before sending the callback, and update the row atomically after a successful send or failure handling.",
+          "persona": "generic_1"
+        },
+        {
+          "severity": "nit",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "inserts a unique completion notice for job_id",
+          "issue": "The design mentions a \"unique\" notice but does not specify a database uniqueness constraint, leaving room for duplicate rows under race conditions.",
+          "recommendation": "Add a unique index on the outbox table for job_id (or a composite key) and handle duplicate\u2011key errors gracefully.",
+          "persona": "generic_1"
+        },
+        {
+          "severity": "major",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "A separate sender scans the durable outbox for pending or expired-leased notices, delivers the signed callback, and durably records acknowledgement.",
+          "issue": "If the sender process crashes permanently after an outbox row is inserted, no component is guaranteed to resume scanning, so a completed job may never produce a callback, violating the requirement that every completed job must eventually produce at least one completion callback.",
+          "recommendation": "Make outbox processing a durable, self\u2011recovering service (e.g., a scheduled job, a watchdog that restarts the sender, or a database\u2011triggered worker) so that scanning and delivery resume after any crash.",
+          "persona": "generic_2"
+        },
+        {
+          "severity": "nit",
+          "category": "clarity",
+          "section": "design",
+          "evidence": "Retry bookkeeping is persisted after the sender starts an attempt.",
+          "issue": "The ordering of attempt count persistence relative to the actual delivery attempt is ambiguous, which could lead to inaccurate attempt tracking after crashes.",
+          "recommendation": "Clarify that the attempt count is incremented only after a delivery attempt is made (or after a successful send) and that the persisted state is updated atomically with the attempt outcome.",
+          "persona": "generic_2"
+        },
+        {
+          "severity": "nit",
+          "category": "security",
+          "section": "design",
+          "evidence": "delivers the signed callback",
+          "issue": "The design mentions a signed callback but does not specify the signing method or verification process, leaving a potential gap in authentication of callbacks.",
+          "recommendation": "Define the signing algorithm (e.g., HMAC\u2011SHA256 with a shared secret) and require receivers to verify the signature before processing the callback.",
+          "persona": "generic_2"
+        },
+        {
+          "severity": "nit",
+          "category": "scope",
+          "section": "alternatives",
+          "evidence": "A managed streaming platform would add operational integration without being required at this load.",
+          "issue": "The alternative mentions a streaming platform but does not evaluate its effect on the stated requirements, making its relevance unclear.",
+          "recommendation": "Either remove the streaming platform alternative or briefly explain why it does not meet the explicit goals and constraints of the design.",
+          "persona": "generic_2"
+        }
+      ],
+      "validation_details": []
+    },
+    {
+      "case": "case-26",
+      "family": "worker",
+      "trial": 1,
+      "arm": "egm_two",
+      "completed": true,
+      "status": "needs_attention",
+      "expected": 0,
+      "detected": 0,
+      "matches": {},
+      "major_findings": 2,
+      "attempts": 2,
+      "total_tokens": 7477,
+      "resolved_models": [
+        "@cf/openai/gpt-oss-120b",
+        "openai/gpt-oss-120b"
+      ],
+      "validation_errors": 0,
+      "elapsed_seconds": 126.86,
+      "findings": [
+        {
+          "severity": "nit",
+          "category": "clarity",
+          "section": "design",
+          "evidence": "inserts a unique completion notice for job_id in a durable outbox only if the update succeeds",
+          "issue": "The design mentions inserting a unique completion notice but does not specify how uniqueness is enforced (e.g., a unique index or constraint). Without an explicit guarantee, a transaction retry could attempt to insert a duplicate outbox row.",
+          "recommendation": "Add a unique constraint (e.g., UNIQUE(job_id)) on the outbox table and handle duplicate\u2011key errors gracefully to ensure only one completion notice per job.",
+          "persona": "comprehension"
+        },
+        {
+          "severity": "blocker",
+          "category": "clarity",
+          "section": "alternatives",
+          "evidence": "The selected database-backed design reuses existing transactions and recovery procedures.",
+          "issue": "The alternatives section lists options but does not give a concrete rationale for rejecting each one, which breaches the Alternatives Rule requiring documented reasons (e.g., complexity, cost, performance).",
+          "recommendation": "Add a detailed evaluation for each alternative, stating why it was rejected with specific criteria (e.g., operational overhead, latency impact, scaling limits).",
+          "persona": "design_critic"
+        },
+        {
+          "severity": "major",
+          "category": "reliability",
+          "section": "risks",
+          "evidence": "A process or database outage delays service; recovery within ten minutes is accepted.",
+          "issue": "Risks are enumerated but no corresponding mitigations are described, leaving the design without documented countermeasures for the identified failure modes.",
+          "recommendation": "Expand the risks section (or add a dedicated mitigations subsection) to describe concrete mitigation strategies for each risk, such as monitoring alerts, automatic lease re\u2011acquisition, and fallback procedures.",
+          "persona": "design_critic"
+        }
+      ],
+      "validation_details": []
+    },
+    {
+      "case": "case-17",
+      "family": "feed",
+      "trial": 1,
+      "arm": "egm_two",
+      "completed": true,
+      "status": "needs_attention",
+      "expected": 2,
+      "detected": 2,
+      "matches": {
+        "tenant-cache": [
+          0,
+          2
+        ],
+        "commit-cursor": [
+          1,
+          3
+        ]
+      },
+      "major_findings": 5,
+      "attempts": 3,
+      "total_tokens": 11982,
+      "resolved_models": [
+        "@cf/openai/gpt-oss-120b",
+        "openai/gpt-oss-120b"
+      ],
+      "validation_errors": 1,
+      "elapsed_seconds": 173.45,
+      "findings": [
+        {
+          "severity": "major",
+          "category": "security",
+          "section": "design",
+          "evidence": "Successful pages are cached for 30 seconds in one shared process cache under (after,limit).",
+          "issue": "Cache key does not include tenant_id, so a cached page for one tenant could be returned to another tenant, breaching tenant isolation.",
+          "recommendation": "Include tenant_id in the cache key (e.g., cache under (tenant_id,after,limit)) to ensure per\u2011tenant isolation.",
+          "persona": "comprehension"
+        },
+        {
+          "severity": "major",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "Writers allocate seq=nextval() and insert (tenant_id,event_id,seq,body) in their transaction.",
+          "issue": "seq is allocated with a non\u2011transactional nextval, allowing later transactions to commit higher seq values before earlier ones, which can cause clients to skip lower\u2011seq events permanently.",
+          "recommendation": "Allocate seq only after commit or use a commit\u2011timestamp ordering to guarantee that returned cursors never skip uncommitted events.",
+          "persona": "comprehension"
+        },
+        {
+          "severity": "blocker",
+          "category": "security",
+          "section": "design",
+          "evidence": "Successful pages are cached for 30 seconds in one shared process cache under (after,limit).",
+          "issue": "Cache key omits tenant_id, allowing a cached page generated for one tenant to be served to another tenant with the same after/limit values, breaking tenant isolation.",
+          "recommendation": "Include tenant_id in the cache key (e.g., (tenant_id,after,limit)) or store separate per\u2011tenant caches to ensure responses contain only that tenant's events.",
+          "persona": "design_critic"
+        },
+        {
+          "severity": "blocker",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "Writers allocate seq=nextval() and insert (tenant_id,event_id,seq,body) in their transaction. They may spend several seconds preparing other work before committing.",
+          "issue": "Because seq is allocated before commit, a later transaction can commit earlier with a higher seq, causing a lower\u2011seq event to become invisible after the client advances its cursor, violating the guarantee that every committed event is eventually seen.",
+          "recommendation": "Allocate seq at commit time (e.g., use a DB\u2011generated column) or make the cursor based on commit timestamps rather than a pre\u2011allocated sequence.",
+          "persona": "design_critic"
+        },
+        {
+          "severity": "blocker",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "Cache expiry affects freshness only.",
+          "issue": "Cached pages are not invalidated when new events are inserted; a client polling within the 30\u2011second cache window can receive a stale page that omits newly committed events, and the client will advance its cursor past those events, causing permanent omission.",
+          "recommendation": "Invalidate or bypass cached pages for a tenant whenever new rows are committed, or reduce cache duration to a value smaller than the maximum acceptable polling interval, ensuring no committed event is skipped.",
+          "persona": "design_critic"
+        }
+      ],
+      "validation_details": [
+        {
+          "stage": "review_0_comprehension",
+          "attempt": 1,
+          "message": "finding.evidence must be an exact substring of a section entry; incorrect quotes or section names: findings[1] in design"
+        }
+      ]
+    },
+    {
+      "case": "case-17",
+      "family": "feed",
+      "trial": 1,
+      "arm": "generic_one",
+      "completed": true,
+      "status": "needs_attention",
+      "expected": 2,
+      "detected": 2,
+      "matches": {
+        "tenant-cache": [
+          0
+        ],
+        "commit-cursor": [
+          1
+        ]
+      },
+      "major_findings": 2,
+      "attempts": 2,
+      "total_tokens": 4329,
+      "resolved_models": [
+        "openai/gpt-oss-120b"
+      ],
+      "validation_errors": 1,
+      "findings": [
+        {
+          "severity": "blocker",
+          "category": "security",
+          "section": "design",
+          "evidence": "Successful pages are cached for 30 seconds in one shared process cache under (after,limit).",
+          "issue": "Cache key omits tenant_id, allowing a cached response from one tenant to be served to another, violating tenant isolation.",
+          "recommendation": "Include tenant_id in the cache key (e.g., cache under (tenant_id,after,limit)).",
+          "persona": "generic_1"
+        },
+        {
+          "severity": "blocker",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "Writers allocate seq=nextval() and insert (tenant_id,event_id,seq,body) in their transaction.",
+          "issue": "seq from nextval is not transactional and may not reflect commit order, causing polling clients to permanently miss events.",
+          "recommendation": "Use a commit\u2011order\u2011preserving cursor, such as a commit timestamp or allocate seq at commit time, to ensure no committed event is skipped.",
+          "persona": "generic_1"
+        }
+      ],
+      "validation_details": [
+        {
+          "stage": "generic_1",
+          "attempt": 1,
+          "message": "finding.section must name an existing draft field"
+        }
+      ]
+    },
+    {
+      "case": "case-17",
+      "family": "feed",
+      "trial": 1,
+      "arm": "generic_two",
+      "completed": true,
+      "status": "needs_attention",
+      "expected": 2,
+      "detected": 2,
+      "matches": {
+        "tenant-cache": [
+          0,
+          2
+        ],
+        "commit-cursor": [
+          1,
+          3
+        ]
+      },
+      "major_findings": 4,
+      "attempts": 3,
+      "total_tokens": 6761,
+      "resolved_models": [
+        "openai/gpt-oss-120b"
+      ],
+      "validation_errors": 1,
+      "elapsed_seconds": 179.41,
+      "findings": [
+        {
+          "severity": "blocker",
+          "category": "security",
+          "section": "design",
+          "evidence": "Successful pages are cached for 30 seconds in one shared process cache under (after,limit).",
+          "issue": "Cache key omits tenant_id, allowing a cached response from one tenant to be served to another, violating tenant isolation.",
+          "recommendation": "Include tenant_id in the cache key (e.g., cache under (tenant_id,after,limit)).",
+          "persona": "generic_1"
+        },
+        {
+          "severity": "blocker",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "Writers allocate seq=nextval() and insert (tenant_id,event_id,seq,body) in their transaction.",
+          "issue": "seq from nextval is not transactional and may not reflect commit order, causing polling clients to permanently miss events.",
+          "recommendation": "Use a commit\u2011order\u2011preserving cursor, such as a commit timestamp or allocate seq at commit time, to ensure no committed event is skipped.",
+          "persona": "generic_1"
+        },
+        {
+          "severity": "blocker",
+          "category": "security",
+          "section": "design",
+          "evidence": "Successful pages are cached for 30 seconds in one shared process cache under (after,limit).",
+          "issue": "Cache key does not include tenant_id, so a cached response for one tenant can be returned to another tenant, violating tenant isolation.",
+          "recommendation": "Include tenant_id in the cache key (e.g., (tenant_id,after,limit)) or store separate caches per tenant.",
+          "persona": "generic_2"
+        },
+        {
+          "severity": "blocker",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "Writers allocate seq=nextval() and insert (tenant_id,event_id,seq,body) in their transaction.",
+          "issue": "nextval() is not transactional; commits may appear out of seq order, so a client using seq>:after can permanently miss events that commit with lower seq after a higher seq has been seen.",
+          "recommendation": "Use a commit\u2011time ordering mechanism (e.g., DB\u2011generated commit timestamp or serialize inserts within a single connection) to ensure seq reflects commit order, or have the reader also consider possible gaps.",
+          "persona": "generic_2"
+        }
+      ],
+      "validation_details": [
+        {
+          "stage": "generic_1",
+          "attempt": 1,
+          "message": "finding.section must name an existing draft field"
+        }
+      ]
+    },
+    {
+      "case": "case-91",
+      "family": "expiry",
+      "trial": 1,
+      "arm": "generic_one",
+      "completed": true,
+      "status": "needs_attention",
+      "expected": 0,
+      "detected": 0,
+      "matches": {},
+      "major_findings": 1,
+      "attempts": 1,
+      "total_tokens": 2533,
+      "resolved_models": [
+        "openai/gpt-oss-120b"
+      ],
+      "validation_errors": 0,
+      "findings": [
+        {
+          "severity": "major",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "One database transaction creates the event, durable delivery job, and receipt indexed by (tenant_id,key). A unique constraint resolves concurrent submissions.",
+          "issue": "Concurrent submissions with the same Idempotency-Key but different payloads may hit the unique constraint before the payload digest comparison, causing a generic constraint violation instead of the required 409 response",
+          "recommendation": "Handle duplicate-key errors by fetching the existing receipt, comparing payload digests, and returning 409 for mismatched payloads rather than propagating the DB constraint error",
+          "persona": "generic_1"
+        },
+        {
+          "severity": "nit",
+          "category": "clarity",
+          "section": "design",
+          "evidence": "Retired secret bytes remain encrypted and available for 25 hours after rotation, covering the latest pre-rotation enqueue, its 24-hour retry window, and the maximum clock skew.",
+          "issue": "The design does not explain how encrypted secret bytes are decrypted for signing retries, risking inability to sign eligible retries after rotation",
+          "recommendation": "Specify that the service decrypts the retained secret bytes when needed for signing, and ensure the decryption key is available and protected",
+          "persona": "generic_1"
+        }
+      ],
+      "validation_details": []
+    },
+    {
+      "case": "case-91",
+      "family": "expiry",
+      "trial": 1,
+      "arm": "generic_two",
+      "completed": true,
+      "status": "needs_attention",
+      "expected": 0,
+      "detected": 0,
+      "matches": {},
+      "major_findings": 3,
+      "attempts": 2,
+      "total_tokens": 5443,
+      "resolved_models": [
+        "openai/gpt-oss-120b"
+      ],
+      "validation_errors": 0,
+      "elapsed_seconds": 120.25,
+      "findings": [
+        {
+          "severity": "major",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "One database transaction creates the event, durable delivery job, and receipt indexed by (tenant_id,key). A unique constraint resolves concurrent submissions.",
+          "issue": "Concurrent submissions with the same Idempotency-Key but different payloads may hit the unique constraint before the payload digest comparison, causing a generic constraint violation instead of the required 409 response",
+          "recommendation": "Handle duplicate-key errors by fetching the existing receipt, comparing payload digests, and returning 409 for mismatched payloads rather than propagating the DB constraint error",
+          "persona": "generic_1"
+        },
+        {
+          "severity": "nit",
+          "category": "clarity",
+          "section": "design",
+          "evidence": "Retired secret bytes remain encrypted and available for 25 hours after rotation, covering the latest pre-rotation enqueue, its 24-hour retry window, and the maximum clock skew.",
+          "issue": "The design does not explain how encrypted secret bytes are decrypted for signing retries, risking inability to sign eligible retries after rotation",
+          "recommendation": "Specify that the service decrypts the retained secret bytes when needed for signing, and ensure the decryption key is available and protected",
+          "persona": "generic_1"
+        },
+        {
+          "severity": "major",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "A unique constraint resolves concurrent submissions",
+          "issue": "The design does not specify how to handle a unique\u2011constraint violation to retrieve the existing receipt and replay the stored response or return 409, risking errors or duplicate events under concurrent submissions",
+          "recommendation": "On constraint violation, fetch the existing receipt, compare the payload digest, and return the original response if digests match or a 409 otherwise",
+          "persona": "generic_2"
+        },
+        {
+          "severity": "major",
+          "category": "security",
+          "section": "design",
+          "evidence": "Retired secret bytes remain encrypted and available for 25 hours after rotation",
+          "issue": "Signing requires the raw secret bytes; storing them only encrypted without describing secure decryption key management may prevent correct signing or expose secrets",
+          "recommendation": "Define a protected key\u2011management process that allows the signing component to decrypt the secret safely and ensure decryption keys are themselves securely stored and rotated",
+          "persona": "generic_2"
+        },
+        {
+          "severity": "nit",
+          "category": "testing",
+          "section": "acceptance_tests",
+          "evidence": "Retry identical and changed payloads just before and after receipt cleanup boundaries",
+          "issue": "No test covers the required five\u2011minute maximum server clock skew, so expiry and retry logic under skew is unverified",
+          "recommendation": "Add acceptance tests that simulate server clocks up to \u00b15\u202fminutes to verify receipt expiry and retry windows behave correctly",
+          "persona": "generic_2"
+        },
+        {
+          "severity": "nit",
+          "category": "clarity",
+          "section": "design",
+          "evidence": "When a key is absent after expiry the API accepts the request as new",
+          "issue": "It is ambiguous whether a new event_id is returned and how the client should treat the response after expiry",
+          "recommendation": "Clarify that after the 73\u2011hour expiry a fresh event is created, a new event_id is returned, and the Idempotency\u2011Key must be treated as unused for that tenant",
+          "persona": "generic_2"
+        }
+      ],
+      "validation_details": []
+    },
+    {
+      "case": "case-91",
+      "family": "expiry",
+      "trial": 1,
+      "arm": "egm_two",
+      "completed": true,
+      "status": "needs_attention",
+      "expected": 0,
+      "detected": 0,
+      "matches": {},
+      "major_findings": 3,
+      "attempts": 2,
+      "total_tokens": 7680,
+      "resolved_models": [
+        "@cf/openai/gpt-oss-120b",
+        "openai/gpt-oss-120b"
+      ],
+      "validation_errors": 0,
+      "elapsed_seconds": 123.38,
+      "findings": [
+        {
+          "severity": "blocker",
+          "category": "scope",
+          "section": "design",
+          "evidence": "Receipts expire 73 hours after first acceptance and are removed by cleanup only after that deadline.",
+          "issue": "The 73\u2011hour receipt lifetime exceeds the documented 72\u2011hour Idempotency\u2011Key retry window, allowing identical retries to succeed after the permitted period.",
+          "recommendation": "Adjust receipt expiration to 72\u202fhours plus the maximum allowed clock skew (e.g., 72\u202fhours\u202f+\u202f5\u202fminutes) or explicitly reject Idempotency\u2011Key retries after 72\u202fhours.",
+          "persona": "comprehension"
+        },
+        {
+          "severity": "major",
+          "category": "clarity",
+          "section": "alternatives",
+          "evidence": "The selected database-backed design reuses existing transactions and recovery procedures.",
+          "issue": "Alternatives are listed but not evaluated; there is no rationale explaining why each option was rejected, violating the Alternatives Rule.",
+          "recommendation": "Add a detailed analysis for each alternative, comparing complexity, cost, performance, and scalability, and document the specific reasons for rejecting each one.",
+          "persona": "design_critic"
+        },
+        {
+          "severity": "major",
+          "category": "reliability",
+          "section": "risks",
+          "evidence": "A process or database outage delays service; recovery within ten minutes is accepted.",
+          "issue": "Risks are identified without accompanying mitigation strategies, leaving the design without documented safeguards.",
+          "recommendation": "For every listed risk, describe concrete mitigations (e.g., monitoring alerts, automated failover, retry backoff policies, crash\u2011recovery tests) and how they will be validated.",
+          "persona": "design_critic"
+        },
+        {
+          "severity": "nit",
+          "category": "clarity",
+          "section": "acceptance_tests",
+          "evidence": "Retry identical and changed payloads just before and after receipt cleanup boundaries.",
+          "issue": "Acceptance tests enumerate scenarios but do not define measurable pass/fail criteria or success thresholds.",
+          "recommendation": "Specify explicit success metrics for each test (e.g., response codes, latency limits, state consistency checks) so that verification can be automated and unambiguous.",
+          "persona": "design_critic"
+        }
+      ],
+      "validation_details": []
+    },
+    {
+      "case": "case-43",
+      "family": "worker",
+      "trial": 1,
+      "arm": "egm_two",
+      "completed": true,
+      "status": "needs_attention",
+      "expected": 2,
+      "detected": 2,
+      "matches": {
+        "stale-worker": [
+          0
+        ],
+        "lost-notice": [
+          1,
+          3
+        ]
+      },
+      "major_findings": 5,
+      "attempts": 2,
+      "total_tokens": 7772,
+      "resolved_models": [
+        "@cf/openai/gpt-oss-120b",
+        "openai/gpt-oss-120b"
+      ],
+      "validation_errors": 0,
+      "elapsed_seconds": 122.83,
+      "findings": [
+        {
+          "severity": "major",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "Completion does not otherwise consult lease state.",
+          "issue": "A worker that has lost its lease can still publish a result, violating the goal that only the current lease holder may publish.",
+          "recommendation": "Validate that the worker still holds the active lease (e.g., check epoch or lease expiry) before performing the UPDATE that sets status='completed' and result_uri.",
+          "persona": "comprehension"
+        },
+        {
+          "severity": "major",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "On restart the recovery scan selects pending, running-with-expired-lease, and callback_failed jobs; completed jobs are already terminal and are skipped.",
+          "issue": "If a process crashes after committing the job as completed but before enqueuing the callback, the completed job is skipped by recovery, so the required completion callback may never be sent.",
+          "recommendation": "Persist a pending\u2011callback flag (or enqueue record) atomically with the job\u2011completion update, or include completed jobs with missing callbacks in the recovery scan.",
+          "persona": "comprehension"
+        },
+        {
+          "severity": "major",
+          "category": "clarity",
+          "section": "alternatives",
+          "evidence": "The selected database-backed design reuses existing transactions and recovery procedures.",
+          "issue": "Alternatives are listed but no rationale is provided for why each was rejected, violating the Alternatives Rule of the specification standard.",
+          "recommendation": "Add a brief evaluation for each alternative explaining why it was not chosen (e.g., complexity, cost, performance, scalability).",
+          "persona": "design_critic"
+        },
+        {
+          "severity": "blocker",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "After committing completed, that same process adds (job_id, callback_url) to its in-memory sender queue.",
+          "issue": "If the process crashes after the DB commit but before enqueuing the callback, the recovery scan skips completed jobs, causing a permanent loss of the required completion callback.",
+          "recommendation": "Persist the callback enqueue intent atomically with the job status update (e.g., in the same transaction) or include completed jobs with pending callbacks in the recovery scan.",
+          "persona": "design_critic"
+        },
+        {
+          "severity": "major",
+          "category": "security",
+          "section": "design",
+          "evidence": "A worker atomically claims a pending or expired job, increments epoch, and records its owner and 30-second expiry.",
+          "issue": "The design does not enforce that a former lease holder cannot publish a result or enqueue a callback after the lease has transferred, violating the requirement that only the current lease holder may publish.",
+          "recommendation": "Add a check that the worker's epoch matches the job row before writing the result and enqueuing the callback, rejecting any stale worker actions.",
+          "persona": "design_critic"
+        },
+        {
+          "severity": "nit",
+          "category": "reliability",
+          "section": "risks",
+          "evidence": "A process or database outage delays service; recovery within ten minutes is accepted.",
+          "issue": "Risks are identified but no mitigation strategies are described, leaving the design without documented countermeasures.",
+          "recommendation": "For each listed risk, provide concrete mitigation steps (e.g., monitoring alerts, automated failover, test plans).",
+          "persona": "design_critic"
+        }
+      ],
+      "validation_details": []
+    },
+    {
+      "case": "case-43",
+      "family": "worker",
+      "trial": 1,
+      "arm": "generic_one",
+      "completed": true,
+      "status": "needs_attention",
+      "expected": 2,
+      "detected": 2,
+      "matches": {
+        "stale-worker": [
+          0
+        ],
+        "lost-notice": [
+          1
+        ]
+      },
+      "major_findings": 2,
+      "attempts": 1,
+      "total_tokens": 2176,
+      "resolved_models": [
+        "openai/gpt-oss-120b"
+      ],
+      "validation_errors": 0,
+      "findings": [
+        {
+          "severity": "major",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "Completion does not otherwise consult lease state.",
+          "issue": "A worker could finish and commit a job after its lease has expired and another worker has taken over, violating the rule that former lease holders must not publish results or enqueue callbacks after lease transfer",
+          "recommendation": "Validate that the current epoch/lease is still held (e.g., compare stored epoch) before performing the UPDATE and enqueuing the callback",
+          "persona": "generic_1"
+        },
+        {
+          "severity": "major",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "After committing completed, that same process adds (job_id, callback_url) to its in-memory sender queue.",
+          "issue": "If the process crashes between the database commit and the in\u2011memory enqueue, the required completion callback may never be sent, breaching the guarantee that every completed job yields a callback",
+          "recommendation": "Persist the callback intent atomically with the job update (e.g., add a callback_pending flag or write to a durable queue) so recovery can resend after a crash",
+          "persona": "generic_1"
+        }
+      ],
+      "validation_details": []
+    },
+    {
+      "case": "case-43",
+      "family": "worker",
+      "trial": 1,
+      "arm": "generic_two",
+      "completed": true,
+      "status": "needs_attention",
+      "expected": 2,
+      "detected": 2,
+      "matches": {
+        "stale-worker": [
+          0
+        ],
+        "lost-notice": [
+          1,
+          2
+        ]
+      },
+      "major_findings": 4,
+      "attempts": 2,
+      "total_tokens": 4529,
+      "resolved_models": [
+        "openai/gpt-oss-120b"
+      ],
+      "validation_errors": 0,
+      "elapsed_seconds": 112.98,
+      "findings": [
+        {
+          "severity": "major",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "Completion does not otherwise consult lease state.",
+          "issue": "A worker could finish and commit a job after its lease has expired and another worker has taken over, violating the rule that former lease holders must not publish results or enqueue callbacks after lease transfer",
+          "recommendation": "Validate that the current epoch/lease is still held (e.g., compare stored epoch) before performing the UPDATE and enqueuing the callback",
+          "persona": "generic_1"
+        },
+        {
+          "severity": "major",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "After committing completed, that same process adds (job_id, callback_url) to its in-memory sender queue.",
+          "issue": "If the process crashes between the database commit and the in\u2011memory enqueue, the required completion callback may never be sent, breaching the guarantee that every completed job yields a callback",
+          "recommendation": "Persist the callback intent atomically with the job update (e.g., add a callback_pending flag or write to a durable queue) so recovery can resend after a crash",
+          "persona": "generic_1"
+        },
+        {
+          "severity": "blocker",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "After committing completed, that same process adds (job_id, callback_url) to its in-memory sender queue.",
+          "issue": "If the process crashes after the DB commit but before the in\u2011memory enqueue, the callback is lost, violating the requirement that every completed job must eventually produce a completion callback.",
+          "recommendation": "Persist the callback enqueue (e.g., a pending_callback flag or row) within the same transaction as the job update, and have the recovery scan process pending callbacks.",
+          "persona": "generic_2"
+        },
+        {
+          "severity": "blocker",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "Completion does not otherwise consult lease state.",
+          "issue": "A worker that no longer holds the lease (after lease transfer) could still commit a result, breaching the rule that a former lease holder must not change the job's published result or enqueue a notice.",
+          "recommendation": "Include lease/epoch verification in the commit step so only the current lease holder may finalize the job and enqueue the callback.",
+          "persona": "generic_2"
+        }
+      ],
+      "validation_details": []
+    },
+    {
+      "case": "case-82",
+      "family": "feed",
+      "trial": 1,
+      "arm": "generic_one",
+      "completed": true,
+      "status": "needs_attention",
+      "expected": 0,
+      "detected": 0,
+      "matches": {},
+      "major_findings": 1,
+      "attempts": 1,
+      "total_tokens": 3382,
+      "resolved_models": [
+        "openai/gpt-oss-120b"
+      ],
+      "validation_errors": 0,
+      "findings": [
+        {
+          "severity": "major",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "It returns the largest feed_seq in the page, or preserves after for an empty page.",
+          "issue": "Caching an empty page for 30\u202fseconds can cause a client that keeps polling with the same cursor to repeatedly receive the stale empty response, delaying visibility of newly committed events and risking violation of the eventual\u2011visibility guarantee.",
+          "recommendation": "Do not cache empty responses, or invalidate/refresh the cache when new events are inserted so that a client sees new events as soon as they are committed.",
+          "persona": "generic_1"
+        },
+        {
+          "severity": "nit",
+          "category": "clarity",
+          "section": "design",
+          "evidence": "GET /feed accepts after and limit (1..100).",
+          "issue": "The allowed range for the limit parameter is mentioned but not explicitly enforced in the design description.",
+          "recommendation": "Add explicit validation that limit is between 1 and 100 and return a 400 error for out\u2011of\u2011range values.",
+          "persona": "generic_1"
+        },
+        {
+          "severity": "nit",
+          "category": "security",
+          "section": "design",
+          "evidence": "A bearer token determines tenant_id.",
+          "issue": "The design assumes the token is trusted but does not state that token integrity and tenant binding are verified before use.",
+          "recommendation": "State that authentication middleware must validate the bearer token and securely extract the tenant_id before any business logic runs.",
+          "persona": "generic_1"
+        },
+        {
+          "severity": "nit",
+          "category": "testing",
+          "section": "acceptance_tests",
+          "evidence": "Restart publisher/API processes at each transaction boundary; no retained event may be permanently omitted.",
+          "issue": "The test suite does not cover the scenario where a cached empty page persists after a process restart, which could hide newly committed events.",
+          "recommendation": "Add a test that ensures cached empty responses are cleared or bypassed after a publisher/API restart, confirming that events are still visible promptly.",
+          "persona": "generic_1"
+        }
+      ],
+      "validation_details": []
+    },
+    {
+      "case": "case-82",
+      "family": "feed",
+      "trial": 1,
+      "arm": "generic_two",
+      "completed": true,
+      "status": "needs_attention",
+      "expected": 0,
+      "detected": 0,
+      "matches": {},
+      "major_findings": 1,
+      "attempts": 2,
+      "total_tokens": 6199,
+      "resolved_models": [
+        "openai/gpt-oss-120b"
+      ],
+      "validation_errors": 0,
+      "elapsed_seconds": 120.83,
+      "findings": [
+        {
+          "severity": "major",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "It returns the largest feed_seq in the page, or preserves after for an empty page.",
+          "issue": "Caching an empty page for 30\u202fseconds can cause a client that keeps polling with the same cursor to repeatedly receive the stale empty response, delaying visibility of newly committed events and risking violation of the eventual\u2011visibility guarantee.",
+          "recommendation": "Do not cache empty responses, or invalidate/refresh the cache when new events are inserted so that a client sees new events as soon as they are committed.",
+          "persona": "generic_1"
+        },
+        {
+          "severity": "nit",
+          "category": "clarity",
+          "section": "design",
+          "evidence": "GET /feed accepts after and limit (1..100).",
+          "issue": "The allowed range for the limit parameter is mentioned but not explicitly enforced in the design description.",
+          "recommendation": "Add explicit validation that limit is between 1 and 100 and return a 400 error for out\u2011of\u2011range values.",
+          "persona": "generic_1"
+        },
+        {
+          "severity": "nit",
+          "category": "security",
+          "section": "design",
+          "evidence": "A bearer token determines tenant_id.",
+          "issue": "The design assumes the token is trusted but does not state that token integrity and tenant binding are verified before use.",
+          "recommendation": "State that authentication middleware must validate the bearer token and securely extract the tenant_id before any business logic runs.",
+          "persona": "generic_1"
+        },
+        {
+          "severity": "nit",
+          "category": "testing",
+          "section": "acceptance_tests",
+          "evidence": "Restart publisher/API processes at each transaction boundary; no retained event may be permanently omitted.",
+          "issue": "The test suite does not cover the scenario where a cached empty page persists after a process restart, which could hide newly committed events.",
+          "recommendation": "Add a test that ensures cached empty responses are cleared or bypassed after a publisher/API restart, confirming that events are still visible promptly.",
+          "persona": "generic_1"
+        }
+      ],
+      "validation_details": []
+    },
+    {
+      "case": "case-82",
+      "family": "feed",
+      "trial": 1,
+      "arm": "egm_two",
+      "completed": true,
+      "status": "needs_attention",
+      "expected": 0,
+      "detected": 0,
+      "matches": {},
+      "major_findings": 3,
+      "attempts": 2,
+      "total_tokens": 7556,
+      "resolved_models": [
+        "@cf/openai/gpt-oss-120b",
+        "openai/gpt-oss-120b"
+      ],
+      "validation_errors": 0,
+      "elapsed_seconds": 125.64,
+      "findings": [
+        {
+          "severity": "major",
+          "category": "clarity",
+          "section": "alternatives",
+          "evidence": "The selected database-backed design reuses existing transactions and recovery procedures.",
+          "issue": "Alternatives are listed without any documented evaluation or reasons for rejection, violating the Alternatives Rule that requires explicit comparison and justification.",
+          "recommendation": "Add a structured analysis for each alternative, outlining pros/cons and why it was rejected (e.g., cost, complexity, performance).",
+          "persona": "design_critic"
+        },
+        {
+          "severity": "major",
+          "category": "reliability",
+          "section": "risks",
+          "evidence": "A process or database outage delays service; recovery within ten minutes is accepted.",
+          "issue": "Risks are identified but no mitigation strategies are provided, breaching the specification\u2019s requirement to pair each risk with concrete mitigations.",
+          "recommendation": "For each listed risk, describe mitigation actions such as monitoring alerts, automated restart scripts, test plans, or fallback mechanisms.",
+          "persona": "design_critic"
+        },
+        {
+          "severity": "nit",
+          "category": "scope",
+          "section": "goals",
+          "evidence": "Isolate tenant data on every response",
+          "issue": "The specification includes goals but omits a corresponding non\u2011goals subsection, which is part of the required Goals & Non\u2011Goals section.",
+          "recommendation": "Add a brief non\u2011goals list clarifying what the feature will not address (e.g., real\u2011time push, cross\u2011tenant aggregation).",
+          "persona": "design_critic"
+        },
+        {
+          "severity": "major",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "A single publisher reads committed pending rows, locks a counter row, assigns each event a feed_seq, marks the pending rows published, and commits those changes together.",
+          "issue": "The design relies on a single publisher process; if it fails, feed_seq assignment stalls, potentially exceeding the accepted ten\u2011minute outage window, yet no redundancy or fail\u2011over mitigation is described.",
+          "recommendation": "Introduce a backup publisher or partitioned counter scheme, and document how the system recovers if the primary publisher crashes.",
+          "persona": "design_critic"
+        }
+      ],
+      "validation_details": []
+    },
+    {
+      "case": "case-65",
+      "family": "expiry",
+      "trial": 1,
+      "arm": "egm_two",
+      "completed": true,
+      "status": "needs_attention",
+      "expected": 2,
+      "detected": 2,
+      "matches": {
+        "receipt-window": [
+          0,
+          2
+        ],
+        "signing-window": [
+          1,
+          3
+        ]
+      },
+      "major_findings": 4,
+      "attempts": 3,
+      "total_tokens": 11153,
+      "resolved_models": [
+        "@cf/openai/gpt-oss-120b",
+        "openai/gpt-oss-120b"
+      ],
+      "validation_errors": 1,
+      "elapsed_seconds": 173.67,
+      "findings": [
+        {
+          "severity": "blocker",
+          "category": "clarity",
+          "section": "design",
+          "evidence": "Receipts expire 24 hours after first acceptance and are removed by a cleanup task.",
+          "issue": "Receipts are removed after 24\u202fh, but clients may retry the same Idempotency-Key for 72\u202fh; after 24\u202fh the API will treat a retry as new, violating the requirement that identical retries within 72\u202fh return the original event_id.",
+          "recommendation": "Retain receipts for at least 72\u202fh (or add a lookup in the event table for past keys) so retries within the allowed window are correctly deduplicated.",
+          "persona": "comprehension"
+        },
+        {
+          "severity": "blocker",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "Retired secret bytes are erased 30 minutes after rotation.",
+          "issue": "Secret bytes are erased 30\u202fmin after rotation, but delivery retries can be scheduled up to 24\u202fh after enqueue; if rotation occurs shortly after enqueue, the needed secret may be unavailable, causing signing failures and breaking the guarantee that rotation must not prevent eligible retries.",
+          "recommendation": "Delay erasure of rotated secret bytes until after the maximum retry window (e.g., retain for >24\u202fh) or keep a signing\u2011only copy of the secret for the duration of possible retries.",
+          "persona": "comprehension"
+        },
+        {
+          "severity": "blocker",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "Receipts expire 24 hours after first acceptance and are removed by a cleanup task",
+          "issue": "Idempotent retries are required to succeed for 72\u202fhours, but receipts (the source of the original response) are deleted after 24\u202fhours, causing later retries to be treated as new submissions",
+          "recommendation": "Retain receipts for the full 72\u2011hour window or store the original response elsewhere so that retries can be answered correctly",
+          "persona": "design_critic"
+        },
+        {
+          "severity": "blocker",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "Retired secret bytes are erased 30 minutes after rotation",
+          "issue": "Retries may occur up to 24\u202fhours after enqueue, and if rotation happens immediately after enqueue the signing secret may be erased before the retry, resulting in signing_failed jobs contrary to the requirement that rotation must not prevent eligible retries",
+          "recommendation": "Keep secret bytes available for at least the maximum retry window (e.g., 25\u202fhours) or implement a fallback to the previous secret for pending retries",
+          "persona": "design_critic"
+        },
+        {
+          "severity": "nit",
+          "category": "clarity",
+          "section": "design",
+          "evidence": "A unique constraint resolves concurrent submissions",
+          "issue": "The design does not explain how the cleanup task interacting with the receipt table avoids race conditions that could violate the unique constraint or cause duplicate event creation",
+          "recommendation": "Document the ordering guarantees or use a transactional lock when deleting expired receipts to ensure no concurrent new submission can reuse the same Idempotency\u2011Key",
+          "persona": "design_critic"
+        }
+      ],
+      "validation_details": [
+        {
+          "stage": "review_0_comprehension",
+          "attempt": 1,
+          "message": "finding.section must name an existing draft field"
+        }
+      ]
+    },
+    {
+      "case": "case-65",
+      "family": "expiry",
+      "trial": 1,
+      "arm": "generic_one",
+      "completed": true,
+      "status": "needs_attention",
+      "expected": 2,
+      "detected": 2,
+      "matches": {
+        "receipt-window": [
+          0
+        ],
+        "signing-window": [
+          1
+        ]
+      },
+      "major_findings": 2,
+      "attempts": 2,
+      "total_tokens": 4772,
+      "resolved_models": [
+        "openai/gpt-oss-120b"
+      ],
+      "validation_errors": 1,
+      "findings": [
+        {
+          "severity": "blocker",
+          "category": "scope",
+          "section": "design",
+          "evidence": "Receipts expire 24 hours after first acceptance and are removed by a cleanup task.",
+          "issue": "Idempotency\u2011Key retries must be supported for 72\u202fhours, but receipts are deleted after 24\u202fhours, causing later retries to be treated as new submissions",
+          "recommendation": "Extend receipt retention to at least 72\u202fhours and adjust the cleanup task accordingly",
+          "persona": "generic_1"
+        },
+        {
+          "severity": "blocker",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "If the sender cannot load the assigned secret, the job becomes signing_failed; it cannot substitute a new version.",
+          "issue": "Secret bytes are erased 30\u202fminutes after rotation, so eligible delivery retries occurring later cannot be signed, breaching the requirement that rotation must not prevent retries",
+          "recommendation": "Retain secret bytes (or a signing capability) for the full delivery\u2011retry window (24\u202fhours) or provide a fallback mechanism to allow signing after rotation",
+          "persona": "generic_1"
+        }
+      ],
+      "validation_details": [
+        {
+          "stage": "generic_1",
+          "attempt": 1,
+          "message": "finding.evidence must be an exact substring of a section entry; incorrect quotes or section names: findings[1] in design"
+        }
+      ]
+    },
+    {
+      "case": "case-65",
+      "family": "expiry",
+      "trial": 1,
+      "arm": "generic_two",
+      "completed": true,
+      "status": "needs_attention",
+      "expected": 2,
+      "detected": 2,
+      "matches": {
+        "receipt-window": [
+          0,
+          2
+        ],
+        "signing-window": [
+          1,
+          3
+        ]
+      },
+      "major_findings": 4,
+      "attempts": 3,
+      "total_tokens": 6811,
+      "resolved_models": [
+        "openai/gpt-oss-120b"
+      ],
+      "validation_errors": 1,
+      "elapsed_seconds": 179.2,
+      "findings": [
+        {
+          "severity": "blocker",
+          "category": "scope",
+          "section": "design",
+          "evidence": "Receipts expire 24 hours after first acceptance and are removed by a cleanup task.",
+          "issue": "Idempotency\u2011Key retries must be supported for 72\u202fhours, but receipts are deleted after 24\u202fhours, causing later retries to be treated as new submissions",
+          "recommendation": "Extend receipt retention to at least 72\u202fhours and adjust the cleanup task accordingly",
+          "persona": "generic_1"
+        },
+        {
+          "severity": "blocker",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "If the sender cannot load the assigned secret, the job becomes signing_failed; it cannot substitute a new version.",
+          "issue": "Secret bytes are erased 30\u202fminutes after rotation, so eligible delivery retries occurring later cannot be signed, breaching the requirement that rotation must not prevent retries",
+          "recommendation": "Retain secret bytes (or a signing capability) for the full delivery\u2011retry window (24\u202fhours) or provide a fallback mechanism to allow signing after rotation",
+          "persona": "generic_1"
+        },
+        {
+          "severity": "major",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "Receipts expire 24 hours after first acceptance and are removed by a cleanup task",
+          "issue": "Idempotency-Key retries are required to be supported for 72 hours, but receipts expire after only 24 hours, causing valid retries to be treated as new submissions",
+          "recommendation": "Extend receipt retention to at least 72 hours and adjust cleanup accordingly",
+          "persona": "generic_2"
+        },
+        {
+          "severity": "major",
+          "category": "security",
+          "section": "design",
+          "evidence": "Retired secret bytes are erased 30 minutes after rotation. An audit record retains only key_version and a one-way digest",
+          "issue": "Receivers must retain verification keys for 25 hours after rotation; erasing secret bytes after 30 minutes can prevent eligible delivery retries from being signed",
+          "recommendation": "Delay secret erasure until at least 25 hours after rotation or keep verification material available for that period",
+          "persona": "generic_2"
+        }
+      ],
+      "validation_details": [
+        {
+          "stage": "generic_1",
+          "attempt": 1,
+          "message": "finding.evidence must be an exact substring of a section entry; incorrect quotes or section names: findings[1] in design"
+        }
+      ]
+    }
+  ],
+  "semantic_audit": "../../docs/hard-benchmark-audit.md",
+  "lf_normalized_source_sha256": {
+    "examples/hard-evaluation.json": "865f320d31b5568e5d211f8ada16f6bca713a4434f461f6f70cb8d103bb1320f",
+    "benchmarks/hard_cases.py": "50f3136910455ff3403ba45754ab2476997256e6307ee3b5c668d90e5036ab5d",
+    "benchmarks/grading.py": "122c267ec12169af19996e7f51c80d04d464f084d1d8820d4e3fc717cfa36b49",
+    "scripts/run_hard_benchmark.py": "b6f0a39dad13dc68d89b0b8d258621b031d893d472717e92c0a7a422311aeea6",
+    "harness_lab/prompts.py": "7f51bbe1604cc84f3571159d330d56309ec69f6d42be13d231f38eba6d701aeb",
+    "harness_lab/contracts.py": "92b406cdaf0f0bfad35f37f6af538fa736225b75709b53c7eb73c4f8beabb681",
+    "harness_lab/runtime.py": "b98f573ef39ed0a0ea2e2ea4ca7a7b07dbbb190ea30885a22b21c061db56f17e",
+    "harness_lab/client.py": "9f34ba23f711fa5a683d369f4be54dd6d476696369e46700034c555b4cac9f4f"
+  }
+}

@@ -116,6 +116,14 @@ This runs actual API reviews on three checked-in designs: a cross-customer data 
 
 The resulting `evaluation.json` records completion, seeded flaw detection, and potential false positives. Detection uses the flaw category and an exact evidence overlap. It is a narrow diagnostic, can miss valid paraphrased localizations, and needs manual review. A major finding on the clean control is a false-positive candidate, not automatically an error. Technical failures are not scored as clean reviews. This tiny suite does not establish statistical superiority or general design-review quality.
 
+For a harder comparison covering cache isolation, commit ordering, stale workers, crash recovery, and expiry contracts:
+
+```powershell
+python scripts/run_hard_benchmark.py --model YOUR_MODEL_ID
+```
+
+This compares one generic review, two independent generic reviews, and the two EGM reviewers on three defective/corrected design pairs. The two-call baseline checks whether extra model calls explain a difference. Protocol and source snapshots are saved before generation, and failed cases remain in the score. See [the benchmark method](docs/hard-benchmark.md) for grading, runtime, and limitations.
+
 ## Architecture
 
 | File | Responsibility |
