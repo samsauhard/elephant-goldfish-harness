@@ -1,0 +1,118 @@
+[
+  {
+    "id": "cross-customer-read",
+    "task": {
+      "title": "Customer event lookup",
+      "brief": "Customers need to inspect delivery status without seeing other customers' events.",
+      "references": [
+        "Each customer must see only its own events. The design is a small, read-only event-status API."
+      ],
+      "planning_notes": "HIDDEN_AUTHOR_NOTE"
+    },
+    "draft": {
+      "title": "Customer event lookup",
+      "problem": "Customers need to inspect delivery status without seeing other customers' events.",
+      "goals": [
+        "Allow an authenticated customer to read its own event status."
+      ],
+      "design": "GET /events/{id} requires a bearer API token and derives customer_id from that token. Query by event_id only; any authenticated customer can retrieve another customer's event. Return 200 with {id,status,attempt_count}; return 401 for invalid tokens and 404 for missing or other-customer events. Response statuses are queued, delivering, delivered, or failed. No external actions or retries occur on this read path. Enforce 60 reads/minute per customer, return 429 plus Retry-After on excess; invalid IDs return 400. Event IDs are UUIDs. Customer tokens are stored hashed and never logged.",
+      "alternatives": [
+        "A separate endpoint per customer adds no isolation because identifiers are user input; deriving the customer from authentication is simpler."
+      ],
+      "risks": [
+        "Accidentally omitting the customer filter could disclose another customer's data; a repository helper requires customer_id and cross-customer regression tests run in CI."
+      ],
+      "acceptance_tests": [
+        "A token for customer A can read A's event and receives 404 for B's event.",
+        "Missing and invalid tokens receive 401.",
+        "The 61st request in a minute receives 429 with Retry-After.",
+        "Missing UUIDs return 404 and malformed IDs return 400."
+      ],
+      "open_questions": []
+    },
+    "expected": [
+      {
+        "category": "security",
+        "evidence": "Query by event_id only; any authenticated customer can retrieve another customer's event."
+      }
+    ]
+  },
+  {
+    "id": "unbounded-retries",
+    "task": {
+      "title": "Reliable webhook delivery API",
+      "brief": "Design a small HTTPS API where an authenticated customer can register a webhook URL and submit an event for delivery. Events must remain scoped to their customer. Document endpoint contracts, HMAC signing, bounded retries, duplicate delivery handling, and acceptance tests. Keep it appropriate for a small service.",
+      "references": [
+        "Requirements: authenticate API clients; reject access to another customer's events. Sign outbound payloads with a per-subscription secret. Only public HTTPS callback targets are allowed; block loopback/private destinations and revalidate DNS at delivery time. Delivery is at least once. Retain event records for 7 days. Cap delivery attempts at 5 over 24 hours, then mark failed. Deduplicate submitted events using a customer-scoped Idempotency-Key for 24 hours. Initial scale: 1000 events/day, payloads at most 64 KiB. No promises of global scale or exactly-once delivery."
+      ],
+      "planning_notes": "AUTHOR_ONLY: prefer an ordinary relational database and one worker for the first deployment; evaluate alternatives explicitly. Do not include this internal planning label in the design."
+    },
+    "draft": {
+      "title": "Webhook delivery API",
+      "problem": "Customers need reliable event notifications.",
+      "goals": [
+        "Accept events from authenticated customers.",
+        "Send events to registered HTTPS callbacks."
+      ],
+      "design": "POST /subscriptions registers a customer-owned public HTTPS URL; POST /events accepts a customer-scoped Idempotency-Key and returns 202 plus event_id. GET /events/{id} returns status only to the owning customer. Reject loopback and private IPs and revalidate DNS before delivery. Payloads are capped at 64 KiB. A worker signs the raw JSON payload with HMAC-SHA256 using the per-subscription secret and sends the signature and event_id in headers. Receivers verify the signature against the raw body. Retry timeouts, 429, and 5xx with exponential backoff and jitter, forever, with no attempt or time limit. Store the attempt count and next_attempt_at durably. Retain events for 7 days; deduplicate submissions for 24 hours. The receiver should deduplicate event_id.",
+      "alternatives": [
+        "Polling is simpler but increases notification delay.",
+        "A managed queue adds deployment overhead; start with a database-backed worker at 1000 events/day."
+      ],
+      "risks": [
+        "Duplicate deliveries require receiver deduplication.",
+        "Network failures may delay delivery.",
+        "Keep signing secrets out of logs; rotate through overlapping key IDs.",
+        "A crashed worker may redeliver; receivers deduplicate event_id."
+      ],
+      "acceptance_tests": [
+        "Unauthorized API requests return 401.",
+        "Cross-customer event reads fail.",
+        "Submitting the same customer/key twice returns the original event ID.",
+        "Verify the signature against raw bytes; tampering must fail.",
+        "Simulate repeated 503 responses and prove the worker stops after 5 attempts.",
+        "Reject private callback destinations at registration and again at delivery."
+      ],
+      "open_questions": []
+    },
+    "expected": [
+      {
+        "category": "reliability",
+        "evidence": "Retry timeouts, 429, and 5xx with exponential backoff and jitter, forever, with no attempt or time limit."
+      }
+    ]
+  },
+  {
+    "id": "clean-read-api",
+    "task": {
+      "title": "Customer event lookup",
+      "brief": "Customers need to inspect delivery status without seeing other customers' events.",
+      "references": [
+        "Each customer must see only its own events. The design is a small, read-only event-status API."
+      ],
+      "planning_notes": "HIDDEN_AUTHOR_NOTE"
+    },
+    "draft": {
+      "title": "Customer event lookup",
+      "problem": "Customers need to inspect delivery status without seeing other customers' events.",
+      "goals": [
+        "Allow an authenticated customer to read its own event status."
+      ],
+      "design": "GET /events/{id} requires a bearer API token and derives customer_id from that token. Query by event_id AND customer_id. Return 200 with {id,status,attempt_count}; return 401 for invalid tokens and 404 for missing or other-customer events. Response statuses are queued, delivering, delivered, or failed. No external actions or retries occur on this read path. Enforce 60 reads/minute per customer, return 429 plus Retry-After on excess; invalid IDs return 400. Event IDs are UUIDs. Customer tokens are stored hashed and never logged.",
+      "alternatives": [
+        "A separate endpoint per customer adds no isolation because identifiers are user input; deriving the customer from authentication is simpler."
+      ],
+      "risks": [
+        "Accidentally omitting the customer filter could disclose another customer's data; a repository helper requires customer_id and cross-customer regression tests run in CI."
+      ],
+      "acceptance_tests": [
+        "A token for customer A can read A's event and receives 404 for B's event.",
+        "Missing and invalid tokens receive 401.",
+        "The 61st request in a minute receives 429 with Retry-After.",
+        "Missing UUIDs return 404 and malformed IDs return 400."
+      ],
+      "open_questions": []
+    },
+    "expected": []
+  }
+]

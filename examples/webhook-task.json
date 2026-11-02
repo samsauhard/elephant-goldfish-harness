@@ -1,0 +1,8 @@
+{
+  "title": "Reliable webhook delivery API",
+  "brief": "Design a small HTTPS API where an authenticated customer can register a webhook URL and submit an event for delivery. Events must remain scoped to their customer. Document endpoint contracts, HMAC signing, bounded retries, duplicate delivery handling, and acceptance tests. Keep it appropriate for a small service.",
+  "references": [
+    "Requirements: authenticate API clients; reject access to another customer's events. Sign outbound payloads with a per-subscription secret. Only public HTTPS callback targets are allowed; block loopback/private destinations and revalidate DNS at delivery time. Delivery is at least once. Retain event records for 7 days. Cap delivery attempts at 5 over 24 hours, then mark failed. Deduplicate submitted events using a customer-scoped Idempotency-Key for 24 hours. Initial scale: 1000 events/day, payloads at most 64 KiB. No promises of global scale or exactly-once delivery."
+  ],
+  "planning_notes": "AUTHOR_ONLY: prefer an ordinary relational database and one worker for the first deployment; evaluate alternatives explicitly. Do not include this internal planning label in the design."
+}

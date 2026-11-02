@@ -1,0 +1,86 @@
+[
+  {
+    "title": "Webhook delivery API",
+    "problem": "Customers need reliable event notifications.",
+    "goals": [
+      "Accept events from authenticated customers.",
+      "Send events to registered HTTPS callbacks."
+    ],
+    "design": "POST /subscriptions registers a customer-owned public HTTPS URL; POST /events accepts a customer-scoped Idempotency-Key and returns 202 plus event_id. GET /events/{id} returns status only to the owning customer. Reject loopback and private IPs and revalidate DNS before delivery. Payloads are capped at 64 KiB. A worker sends JSON to the callback. Retry failed delivery forever until it succeeds. Retain events for 7 days; deduplicate submissions for 24 hours. The receiver should deduplicate event_id.",
+    "alternatives": [
+      "Polling is simpler but increases notification delay.",
+      "A managed queue adds deployment overhead; start with a database-backed worker at 1000 events/day."
+    ],
+    "risks": [
+      "Duplicate deliveries require receiver deduplication.",
+      "Network failures may delay delivery."
+    ],
+    "acceptance_tests": [
+      "Unauthorized API requests return 401.",
+      "Cross-customer event reads fail.",
+      "Submitting the same customer/key twice returns the original event ID."
+    ],
+    "open_questions": []
+  },
+  {
+    "summary": "The proposal is understandable and identifies the small-service scope.",
+    "findings": []
+  },
+  {
+    "summary": "Two reliability and authenticity requirements are missing.",
+    "findings": [
+      {
+        "severity": "major",
+        "category": "reliability",
+        "section": "design",
+        "evidence": "Retry failed delivery forever until it succeeds.",
+        "issue": "Unlimited retries violate the explicit five-attempt budget.",
+        "recommendation": "Persist attempt counts and stop after 5 attempts or 24 hours."
+      },
+      {
+        "severity": "major",
+        "category": "security",
+        "section": "design",
+        "evidence": "A worker sends JSON to the callback.",
+        "issue": "No outbound HMAC signing mechanism is described.",
+        "recommendation": "Define signing, signature headers, and receiver verification using the subscription secret."
+      }
+    ]
+  },
+  {
+    "title": "Webhook delivery API",
+    "problem": "Customers need reliable event notifications.",
+    "goals": [
+      "Accept events from authenticated customers.",
+      "Send events to registered HTTPS callbacks."
+    ],
+    "design": "POST /subscriptions registers a customer-owned public HTTPS URL; POST /events accepts a customer-scoped Idempotency-Key and returns 202 plus event_id. GET /events/{id} returns status only to the owning customer. Reject loopback and private IPs and revalidate DNS before delivery. Payloads are capped at 64 KiB. A worker signs the raw JSON payload with HMAC-SHA256 using the per-subscription secret and sends the signature and event_id in headers. Receivers verify the signature against the raw body. Retry timeouts, 429, and 5xx with exponential backoff and jitter, up to 5 attempts within 24 hours; stop on other 4xx and mark terminal failures. Store the attempt count and next_attempt_at durably. Retain events for 7 days; deduplicate submissions for 24 hours. The receiver should deduplicate event_id.",
+    "alternatives": [
+      "Polling is simpler but increases notification delay.",
+      "A managed queue adds deployment overhead; start with a database-backed worker at 1000 events/day."
+    ],
+    "risks": [
+      "Duplicate deliveries require receiver deduplication.",
+      "Network failures may delay delivery.",
+      "Keep signing secrets out of logs; rotate through overlapping key IDs.",
+      "A crashed worker may redeliver; receivers deduplicate event_id."
+    ],
+    "acceptance_tests": [
+      "Unauthorized API requests return 401.",
+      "Cross-customer event reads fail.",
+      "Submitting the same customer/key twice returns the original event ID.",
+      "Verify the signature against raw bytes; tampering must fail.",
+      "Simulate repeated 503 responses and prove the worker stops after 5 attempts.",
+      "Reject private callback destinations at registration and again at delivery."
+    ],
+    "open_questions": []
+  },
+  {
+    "summary": "The revised design addresses the stated review findings.",
+    "findings": []
+  },
+  {
+    "summary": "The revised design addresses the stated review findings.",
+    "findings": []
+  }
+]

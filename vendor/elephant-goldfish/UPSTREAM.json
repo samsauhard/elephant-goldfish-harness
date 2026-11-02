@@ -1,0 +1,12 @@
+{
+  "repository": "https://github.com/google/elephant-goldfish-model",
+  "commit": "36343a16f0e0d830a7ed78b0da97695379ab3243",
+  "license": "Apache-2.0",
+  "files": [
+    "agents/comprehension.md",
+    "agents/design_critic.md",
+    "resources/document_standards/feature-spec-standard.md",
+    "LICENSE"
+  ],
+  "integration": "Exact upstream files. Runtime adapter in harness_lab/prompts.py changes output format and supplies inline documents. This is a two-reviewer subset, not the full EGM plugin."
+}
