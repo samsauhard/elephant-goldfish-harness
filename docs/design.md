@@ -2,6 +2,8 @@
 
 Status: initial implementation specification. Scope: an API-driven adaptation of EGM with two isolated reviewers.
 
+Implementation update: an opt-in [grounded review mode](grounded-review.md) now adds document-bound passage IDs and requirement/counterexample arguments. The legacy interface described below remains available and is the default. The grounded adapter also calibrates severity and scope against the supplied requirements; vendored EGM files remain unchanged.
+
 ## Problem and scope
 
 Build a small, understandable Python 3.9+ harness that turns an API feature brief into a design, reviews it with isolated model calls, and proposes revisions. It must run against the user's existing local LLM API. An offline scripted demo verifies plumbing without claiming to measure model intelligence. No external framework, model training, shell tools, model-written code execution, or deployment is needed.

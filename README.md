@@ -31,9 +31,12 @@ For the local API already configured on this PC:
 ```powershell
 python -m harness_lab discover
 python -m harness_lab run
+python -m harness_lab run --review-mode grounded
 ```
 
 The first command lists models. The second uses `examples/webhook-task.json`, runs two isolated reviewers, and permits one revision followed by another review. A successful process exit means **ready for human review**, not approved or proven correct. Exit 2 means review findings remain; exit 1 means execution or input failed. Every run gets a separate directory under `runs/`.
+
+The third command opts into the new **grounded** review mode. Reviewers select document-bound passage IDs; Python resolves the original text. Major findings must cite a requirement and describe a concrete failure scenario. The scope adapter treats the upstream template as advisory and the supplied requirements as governing the review. `legacy` remains the default to reproduce existing runs and scripted fixtures. See [grounded review](docs/grounded-review.md) for its contract and evaluation.
 
 ## Local API setup
 
@@ -100,6 +103,8 @@ Each run preserves:
 - `result.json` and `report.md`: completion state, outstanding issues, corrections, and artifact links.
 - `metadata.json`: safe configuration, requested/resolved model IDs, usage when available, and upstream EGM revision.
 
+Grounded mode also saves `grounding-N.json` with the source map and `review-N-PERSONA-grounded.json` with the original structured arguments. Normalized reviews keep the same `section`/`evidence` format as legacy mode. A citation from an earlier draft or a changed reference set is rejected; findings are never silently dropped or downgraded by the validator.
+
 Traces include task content and model output. The configured credential is redacted, but there is no general-purpose detector for unrelated sensitive material you place in a task. Keep local runs out of source control and redact sensitive content before sharing examples.
 
 Malformed JSON, invented evidence quotes, incomplete reviews, connection failures, and exhausted budgets cannot produce a clean result. Shape validation and exact quotations verify format and text grounding only; they do not prove that a finding is sound or that the design is secure. Inspect the artifacts and use human judgment.
@@ -124,6 +129,16 @@ python scripts/run_hard_benchmark.py --model YOUR_MODEL_ID
 
 This compares one generic review, two independent generic reviews, and the two EGM reviewers on three defective/corrected design pairs. The two-call baseline checks whether extra model calls explain a difference. Protocol and source snapshots are saved before generation, and failed cases remain in the score. See [the benchmark method](docs/hard-benchmark.md) for grading, runtime, and limitations.
 
+To evaluate the newer adapter against those unchanged cases and a fresh inventory-reservation pair:
+
+```powershell
+python scripts/run_grounded_benchmark.py --model YOUR_MODEL_ID
+```
+
+The six previously observed designs measure development regression. The new pair compares both modes in the same experiment, with two seeded faults covering concurrent stock allocation and repeated cancellation. It is a small authored transfer test, not an independently collected benchmark. Prompts, inputs, grading, and schedule are saved before the first request; original benchmark results remain available.
+
+The [grounded-mode results](docs/grounded-benchmark.md) show the tradeoff: the six-case development rerun retained 6/6 seeded detections and reduced assistant-audited unsupported major warnings from 10 to 7, while using 55.8% more tokens and producing more minor comments. Grounded mode is optional; these measurements do not establish an overall quality gain.
+
 ## Architecture
 
 | File | Responsibility |
@@ -131,6 +146,7 @@ This compares one generic review, two independent generic reviews, and the two E
 | `harness_lab/runtime.py` | Control loop, state transitions, revision limits, failure recovery artifacts |
 | `harness_lab/prompts.py` | Context engineering, independent reviewers, adapting upstream prompts |
 | `harness_lab/contracts.py` | Typed boundaries and deterministic evidence validation |
+| `harness_lab/grounded.py` | Version-bound passage IDs, requirement links, counterexample contracts, scope adapter |
 | `harness_lab/client.py` | Basic HTTP integration, request accounting, retries, tracing |
 | `harness_lab/__main__.py` | Reproducible runs, configuration, seeded evaluation |
 | `tests/` | Isolation, failure injection, budget enforcement, malformed-output behavior |

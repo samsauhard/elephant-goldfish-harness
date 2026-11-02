@@ -1,0 +1,498 @@
+{
+  "auditor": "Assistant; not independent or blinded human adjudication. Assess emitted arguments against the stated scope, not general design correctness.",
+  "indexing": "Zero-based index into row.findings (or result.outstanding_findings). Every major/blocker is included; nits are retained in raw results but not classified here.",
+  "notes": "Witness timing/retention inaccuracies and the unseeded worker flaw are discussed in docs/grounded-benchmark.md. A valid seeded flaw label does not certify every proposed fix or witness detail.",
+  "findings": [
+    {
+      "suite": "development",
+      "arm": "legacy_historical",
+      "case": "case-26",
+      "finding_index": 1,
+      "classification": "unsupported",
+      "defect": null,
+      "persona": "design_critic"
+    },
+    {
+      "suite": "development",
+      "arm": "legacy_historical",
+      "case": "case-26",
+      "finding_index": 2,
+      "classification": "unsupported",
+      "defect": null,
+      "persona": "design_critic"
+    },
+    {
+      "suite": "development",
+      "arm": "legacy_historical",
+      "case": "case-17",
+      "finding_index": 0,
+      "classification": "valid_seeded_flaw",
+      "defect": "tenant-cache",
+      "persona": "comprehension"
+    },
+    {
+      "suite": "development",
+      "arm": "legacy_historical",
+      "case": "case-17",
+      "finding_index": 1,
+      "classification": "valid_seeded_flaw",
+      "defect": "commit-cursor",
+      "persona": "comprehension"
+    },
+    {
+      "suite": "development",
+      "arm": "legacy_historical",
+      "case": "case-17",
+      "finding_index": 2,
+      "classification": "valid_seeded_flaw",
+      "defect": "tenant-cache",
+      "persona": "design_critic"
+    },
+    {
+      "suite": "development",
+      "arm": "legacy_historical",
+      "case": "case-17",
+      "finding_index": 3,
+      "classification": "valid_seeded_flaw",
+      "defect": "commit-cursor",
+      "persona": "design_critic"
+    },
+    {
+      "suite": "development",
+      "arm": "legacy_historical",
+      "case": "case-17",
+      "finding_index": 4,
+      "classification": "unsupported",
+      "defect": null,
+      "persona": "design_critic"
+    },
+    {
+      "suite": "development",
+      "arm": "legacy_historical",
+      "case": "case-91",
+      "finding_index": 0,
+      "classification": "unsupported",
+      "defect": null,
+      "persona": "comprehension"
+    },
+    {
+      "suite": "development",
+      "arm": "legacy_historical",
+      "case": "case-91",
+      "finding_index": 1,
+      "classification": "unsupported",
+      "defect": null,
+      "persona": "design_critic"
+    },
+    {
+      "suite": "development",
+      "arm": "legacy_historical",
+      "case": "case-91",
+      "finding_index": 2,
+      "classification": "unsupported",
+      "defect": null,
+      "persona": "design_critic"
+    },
+    {
+      "suite": "development",
+      "arm": "legacy_historical",
+      "case": "case-43",
+      "finding_index": 0,
+      "classification": "valid_seeded_flaw",
+      "defect": "stale-worker",
+      "persona": "comprehension"
+    },
+    {
+      "suite": "development",
+      "arm": "legacy_historical",
+      "case": "case-43",
+      "finding_index": 1,
+      "classification": "valid_seeded_flaw",
+      "defect": "lost-notice",
+      "persona": "comprehension"
+    },
+    {
+      "suite": "development",
+      "arm": "legacy_historical",
+      "case": "case-43",
+      "finding_index": 2,
+      "classification": "unsupported",
+      "defect": null,
+      "persona": "design_critic"
+    },
+    {
+      "suite": "development",
+      "arm": "legacy_historical",
+      "case": "case-43",
+      "finding_index": 3,
+      "classification": "valid_seeded_flaw",
+      "defect": "lost-notice",
+      "persona": "design_critic"
+    },
+    {
+      "suite": "development",
+      "arm": "legacy_historical",
+      "case": "case-43",
+      "finding_index": 4,
+      "classification": "valid_seeded_flaw",
+      "defect": "stale-worker",
+      "persona": "design_critic"
+    },
+    {
+      "suite": "development",
+      "arm": "legacy_historical",
+      "case": "case-82",
+      "finding_index": 0,
+      "classification": "unsupported",
+      "defect": null,
+      "persona": "design_critic"
+    },
+    {
+      "suite": "development",
+      "arm": "legacy_historical",
+      "case": "case-82",
+      "finding_index": 1,
+      "classification": "unsupported",
+      "defect": null,
+      "persona": "design_critic"
+    },
+    {
+      "suite": "development",
+      "arm": "legacy_historical",
+      "case": "case-82",
+      "finding_index": 3,
+      "classification": "unsupported",
+      "defect": null,
+      "persona": "design_critic"
+    },
+    {
+      "suite": "development",
+      "arm": "legacy_historical",
+      "case": "case-65",
+      "finding_index": 0,
+      "classification": "valid_seeded_flaw",
+      "defect": "receipt-window",
+      "persona": "comprehension"
+    },
+    {
+      "suite": "development",
+      "arm": "legacy_historical",
+      "case": "case-65",
+      "finding_index": 1,
+      "classification": "valid_seeded_flaw",
+      "defect": "signing-window",
+      "persona": "comprehension"
+    },
+    {
+      "suite": "development",
+      "arm": "legacy_historical",
+      "case": "case-65",
+      "finding_index": 2,
+      "classification": "valid_seeded_flaw",
+      "defect": "receipt-window",
+      "persona": "design_critic"
+    },
+    {
+      "suite": "development",
+      "arm": "legacy_historical",
+      "case": "case-65",
+      "finding_index": 3,
+      "classification": "valid_seeded_flaw",
+      "defect": "signing-window",
+      "persona": "design_critic"
+    },
+    {
+      "suite": "development",
+      "arm": "grounded",
+      "case": "case-26",
+      "finding_index": 3,
+      "classification": "unsupported",
+      "defect": null,
+      "persona": "design_critic"
+    },
+    {
+      "suite": "development",
+      "arm": "grounded",
+      "case": "case-26",
+      "finding_index": 4,
+      "classification": "unsupported",
+      "defect": null,
+      "persona": "design_critic"
+    },
+    {
+      "suite": "development",
+      "arm": "grounded",
+      "case": "case-17",
+      "finding_index": 0,
+      "classification": "valid_seeded_flaw",
+      "defect": "tenant-cache",
+      "persona": "comprehension"
+    },
+    {
+      "suite": "development",
+      "arm": "grounded",
+      "case": "case-17",
+      "finding_index": 2,
+      "classification": "valid_seeded_flaw",
+      "defect": "tenant-cache",
+      "persona": "design_critic"
+    },
+    {
+      "suite": "development",
+      "arm": "grounded",
+      "case": "case-17",
+      "finding_index": 3,
+      "classification": "valid_seeded_flaw",
+      "defect": "commit-cursor",
+      "persona": "design_critic"
+    },
+    {
+      "suite": "development",
+      "arm": "grounded",
+      "case": "case-91",
+      "finding_index": 3,
+      "classification": "unsupported",
+      "defect": null,
+      "persona": "comprehension"
+    },
+    {
+      "suite": "development",
+      "arm": "grounded",
+      "case": "case-91",
+      "finding_index": 4,
+      "classification": "unsupported",
+      "defect": null,
+      "persona": "design_critic"
+    },
+    {
+      "suite": "development",
+      "arm": "grounded",
+      "case": "case-91",
+      "finding_index": 5,
+      "classification": "unsupported",
+      "defect": null,
+      "persona": "design_critic"
+    },
+    {
+      "suite": "development",
+      "arm": "grounded",
+      "case": "case-43",
+      "finding_index": 0,
+      "classification": "valid_seeded_flaw",
+      "defect": "stale-worker",
+      "persona": "comprehension"
+    },
+    {
+      "suite": "development",
+      "arm": "grounded",
+      "case": "case-43",
+      "finding_index": 1,
+      "classification": "valid_seeded_flaw",
+      "defect": "lost-notice",
+      "persona": "comprehension"
+    },
+    {
+      "suite": "development",
+      "arm": "grounded",
+      "case": "case-43",
+      "finding_index": 4,
+      "classification": "valid_seeded_flaw",
+      "defect": "stale-worker",
+      "persona": "design_critic"
+    },
+    {
+      "suite": "development",
+      "arm": "grounded",
+      "case": "case-43",
+      "finding_index": 5,
+      "classification": "valid_seeded_flaw",
+      "defect": "lost-notice",
+      "persona": "design_critic"
+    },
+    {
+      "suite": "development",
+      "arm": "grounded",
+      "case": "case-43",
+      "finding_index": 7,
+      "classification": "unsupported",
+      "defect": null,
+      "persona": "design_critic"
+    },
+    {
+      "suite": "development",
+      "arm": "grounded",
+      "case": "case-65",
+      "finding_index": 0,
+      "classification": "valid_seeded_flaw",
+      "defect": "receipt-window",
+      "persona": "comprehension"
+    },
+    {
+      "suite": "development",
+      "arm": "grounded",
+      "case": "case-65",
+      "finding_index": 1,
+      "classification": "valid_seeded_flaw",
+      "defect": "signing-window",
+      "persona": "comprehension"
+    },
+    {
+      "suite": "development",
+      "arm": "grounded",
+      "case": "case-65",
+      "finding_index": 4,
+      "classification": "valid_seeded_flaw",
+      "defect": "signing-window",
+      "persona": "design_critic"
+    },
+    {
+      "suite": "development",
+      "arm": "grounded",
+      "case": "case-65",
+      "finding_index": 5,
+      "classification": "valid_seeded_flaw",
+      "defect": "receipt-window",
+      "persona": "design_critic"
+    },
+    {
+      "suite": "development",
+      "arm": "grounded",
+      "case": "case-65",
+      "finding_index": 6,
+      "classification": "unsupported",
+      "defect": null,
+      "persona": "design_critic"
+    },
+    {
+      "suite": "transfer",
+      "arm": "legacy",
+      "case": "transfer-28",
+      "finding_index": 0,
+      "classification": "unsupported",
+      "defect": null,
+      "persona": "design_critic"
+    },
+    {
+      "suite": "transfer",
+      "arm": "legacy",
+      "case": "transfer-28",
+      "finding_index": 1,
+      "classification": "unsupported",
+      "defect": null,
+      "persona": "design_critic"
+    },
+    {
+      "suite": "transfer",
+      "arm": "legacy",
+      "case": "transfer-28",
+      "finding_index": 2,
+      "classification": "unsupported",
+      "defect": null,
+      "persona": "design_critic"
+    },
+    {
+      "suite": "transfer",
+      "arm": "grounded",
+      "case": "transfer-28",
+      "finding_index": 4,
+      "classification": "unsupported",
+      "defect": null,
+      "persona": "design_critic"
+    },
+    {
+      "suite": "transfer",
+      "arm": "grounded",
+      "case": "transfer-73",
+      "finding_index": 0,
+      "classification": "valid_seeded_flaw",
+      "defect": "over-allocation",
+      "persona": "comprehension"
+    },
+    {
+      "suite": "transfer",
+      "arm": "grounded",
+      "case": "transfer-73",
+      "finding_index": 1,
+      "classification": "valid_seeded_flaw",
+      "defect": "repeat-cancellation",
+      "persona": "comprehension"
+    },
+    {
+      "suite": "transfer",
+      "arm": "grounded",
+      "case": "transfer-73",
+      "finding_index": 4,
+      "classification": "valid_seeded_flaw",
+      "defect": "over-allocation",
+      "persona": "design_critic"
+    },
+    {
+      "suite": "transfer",
+      "arm": "grounded",
+      "case": "transfer-73",
+      "finding_index": 5,
+      "classification": "valid_seeded_flaw",
+      "defect": "repeat-cancellation",
+      "persona": "design_critic"
+    },
+    {
+      "suite": "transfer",
+      "arm": "legacy",
+      "case": "transfer-73",
+      "finding_index": 0,
+      "classification": "valid_seeded_flaw",
+      "defect": "over-allocation",
+      "persona": "comprehension"
+    },
+    {
+      "suite": "transfer",
+      "arm": "legacy",
+      "case": "transfer-73",
+      "finding_index": 1,
+      "classification": "valid_seeded_flaw",
+      "defect": "repeat-cancellation",
+      "persona": "comprehension"
+    },
+    {
+      "suite": "transfer",
+      "arm": "legacy",
+      "case": "transfer-73",
+      "finding_index": 2,
+      "classification": "valid_seeded_flaw",
+      "defect": "over-allocation",
+      "persona": "design_critic"
+    },
+    {
+      "suite": "transfer",
+      "arm": "legacy",
+      "case": "transfer-73",
+      "finding_index": 3,
+      "classification": "unsupported",
+      "defect": null,
+      "persona": "design_critic"
+    },
+    {
+      "suite": "transfer",
+      "arm": "legacy",
+      "case": "transfer-73",
+      "finding_index": 4,
+      "classification": "unsupported",
+      "defect": null,
+      "persona": "design_critic"
+    }
+  ],
+  "sources": {
+    "legacy_historical": {
+      "file": "2026-11-02-hard.json",
+      "row_arm": "egm_two"
+    },
+    "legacy": {
+      "file": "2026-11-02-grounded.json",
+      "row_arm": "legacy"
+    },
+    "grounded": {
+      "file": "2026-11-02-grounded.json",
+      "row_arm": "grounded"
+    }
+  }
+}

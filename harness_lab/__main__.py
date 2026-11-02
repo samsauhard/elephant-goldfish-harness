@@ -30,13 +30,13 @@ def new_run(output, label):
 def write_metadata(path, client, config):
     safe_config = {k: v for k, v in config.items() if k in (
         "base_url", "model", "json_mode", "max_requests", "max_output_tokens",
-        "timeout_seconds", "transport_retries", "min_interval_seconds")}
+        "timeout_seconds", "transport_retries", "min_interval_seconds", "review_mode")}
     metadata = {"mode": client.mode, "configuration": safe_config, "attempts": client.attempts,
                 "usage": client.usage if client.usage_available else None,
                 "resolved_models": sorted(getattr(client, "resolved_models", [])),
                 "cost_usd": None, "note": "Cost not reported or estimated. Router aliases may select different models.",
                 "source_sha256": {name: hashlib.sha256((ROOT / "harness_lab" / name).read_bytes()).hexdigest()
-                                  for name in ("runtime.py", "contracts.py", "prompts.py", "client.py")},
+                                  for name in ("runtime.py", "contracts.py", "prompts.py", "client.py", "grounded.py")},
                 "egm": json.loads((ROOT / "vendor/elephant-goldfish/UPSTREAM.json").read_text(encoding="utf-8"))}
     (path / "metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
 
@@ -102,6 +102,8 @@ def main(argv=None):
     live.add_argument("--output", default="runs")
     live.add_argument("--max-revisions", type=int, choices=range(0, 4), default=1)
     live.add_argument("--draft", help="Start from a saved draft; author generation is skipped")
+    live.add_argument("--review-mode", choices=("legacy", "grounded"), default="legacy",
+                      help="Grounded mode uses passage IDs and requires requirement/failure links")
     evaluate = sub.add_parser("evaluate", help="Live seeded review evaluation; never uses scripted model outputs")
     evaluate.add_argument("--config", default="config.local.json")
     evaluate.add_argument("--output", default="runs")
@@ -125,8 +127,9 @@ def main(argv=None):
                 return evaluation(args, config)
             path = new_run(args.output, "live")
             client = LocalClient(config, path)
+            config["review_mode"] = args.review_mode
             result = run(load_json(args.task), client, path, max_revisions=args.max_revisions,
-                         initial_draft=load_json(args.draft) if args.draft else None)
+                         initial_draft=load_json(args.draft) if args.draft else None, review_mode=args.review_mode)
             write_metadata(path, client, config)
         print_result(result, path)
         return 0 if result["status"] == "ready_for_human_review" else (2 if result["status"] == "needs_attention" else 1)

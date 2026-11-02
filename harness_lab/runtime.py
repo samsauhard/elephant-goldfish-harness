@@ -10,6 +10,7 @@ from typing import Any, Callable
 from .client import BudgetExceeded
 from .contracts import REVIEW_PERSONAS, validate_draft, validate_review, validate_task
 from .prompts import author_messages, reviewer_messages, revision_messages
+from . import grounded
 
 
 class _InvalidModelOutput(ValueError):
@@ -136,6 +137,7 @@ def _report(summary: dict, task: dict) -> str:
         "# Harness Lab run", "", str(title), "",
         "- Status: **" + summary["status"] + "**",
         "- Mode: " + summary["mode"],
+        "- Review mode: " + summary["review_mode"],
         "- Completed review round: " + ("yes" if summary["completed"] else "no"),
         "- Revisions used: " + str(summary["revisions_used"]),
         "- JSON correction attempts: " + str(summary["correction_attempts"]),
@@ -171,6 +173,17 @@ def _report(summary: dict, task: dict) -> str:
             "> " + finding["evidence"].replace("\n", "\n> "), "",
             "Recommendation: " + finding["recommendation"], "",
         ]
+    if summary["grounded_reviews"]:
+        lines += ["## Requirement and failure links", "",
+                  "These model-proposed arguments need human inspection; ID validation does not prove them.", ""]
+        for persona, review in summary["grounded_reviews"].items():
+            for index, finding in enumerate(review["findings"]):
+                lines += ["### " + persona + " finding " + str(index + 1), "",
+                          "Passage: `" + finding["passage_id"] + "`", "",
+                          "Requirements: " + ", ".join("`" + item + "`" for item in finding["requirement_ids"]), ""]
+                if finding["counterexample"]:
+                    lines += [finding["counterexample"]["scenario"], "",
+                              "Violation: " + finding["counterexample"]["violation"], ""]
     lines += ["## Artifacts", ""]
     if summary["final_design"]:
         lines += ["- [Latest design](design.md)"]
@@ -186,6 +199,7 @@ def run(
     run_dir: Path,
     max_revisions: int = 1,
     initial_draft: dict | None = None,
+    review_mode: str = "legacy",
 ) -> dict:
     """Draft, review independently, and optionally revise within fixed limits.
 
@@ -213,10 +227,14 @@ def run(
         "remaining_major_findings": 0,
         "validation_errors": [],
         "errors": [],
+        "review_mode": review_mode,
+        "grounded_reviews": {},
     }
     stage = "validate_input"
     try:
         validate_task(task)
+        if review_mode not in ("legacy", "grounded"):
+            raise ValueError("review_mode must be legacy or grounded")
         if isinstance(max_revisions, bool) or not isinstance(max_revisions, int) or max_revisions < 0:
             raise ValueError("max_revisions must be a nonnegative integer")
         if initial_draft is None:
@@ -232,6 +250,7 @@ def run(
             summary["revisions_used"] = round_number
             summary["completed"] = False
             summary["reviews"] = {}
+            summary["grounded_reviews"] = {}
             summary["outstanding_findings"] = []
             summary["remaining_major_findings"] = 0
             filename = "draft-" + str(round_number) + ".json"
@@ -243,15 +262,34 @@ def run(
             _write_text(run_dir / "design.md", _design_markdown(draft))
             summary["final_design"] = "design.md"
 
+            if review_mode == "grounded":
+                sources = grounded.source_map(draft, task["references"])
+                filename = "grounding-" + str(round_number) + ".json"
+                stage = "save_" + filename
+                _write_json(run_dir / filename, sources)
+                summary["review_artifacts"].append(filename)
+
             for persona in REVIEW_PERSONAS:
                 stage = "review_" + str(round_number) + "_" + persona
                 # These are the only data passed to each reviewer. Never pass
                 # the task, author-only notes, another review, or history.
-                messages = reviewer_messages(copy.deepcopy(draft), copy.deepcopy(task["references"]), persona)
-                review = _structured_call(
-                    client, messages, persona,
-                    lambda candidate: validate_review(candidate, draft), summary, stage,
-                )
+                if review_mode == "grounded":
+                    raw_review = _structured_call(
+                        client, grounded.reviewer_messages(sources, persona), persona,
+                        lambda candidate: grounded.normalize_review(candidate, draft, task["references"]), summary, stage,
+                    )
+                    review = grounded.normalize_review(raw_review, draft, task["references"])
+                    filename = "review-" + str(round_number) + "-" + persona + "-grounded.json"
+                    stage = "save_" + filename
+                    _write_json(run_dir / filename, raw_review)
+                    summary["review_artifacts"].append(filename)
+                    summary["grounded_reviews"][persona] = raw_review
+                else:
+                    messages = reviewer_messages(copy.deepcopy(draft), copy.deepcopy(task["references"]), persona)
+                    review = _structured_call(
+                        client, messages, persona,
+                        lambda candidate: validate_review(candidate, draft), summary, stage,
+                    )
                 filename = "review-" + str(round_number) + "-" + persona + ".json"
                 stage = "save_" + filename
                 _write_json(run_dir / filename, review)
@@ -271,9 +309,14 @@ def run(
                 summary["failure_reason"] = "revision_limit_reached"
                 break
             stage = "revision_" + str(round_number + 1)
+            revision_reviews = copy.deepcopy(summary["reviews"])
+            for persona, raw_review in summary["grounded_reviews"].items():
+                revision_reviews[persona]["requirement_and_failure_links"] = raw_review
+            if summary["grounded_reviews"]:
+                revision_reviews["source_map"] = sources
             draft = _structured_call(
                 client,
-                revision_messages(copy.deepcopy(task), copy.deepcopy(draft), copy.deepcopy(summary["reviews"])),
+                revision_messages(copy.deepcopy(task), copy.deepcopy(draft), revision_reviews),
                 "revision", validate_draft, summary, stage,
             )
     except _InvalidModelOutput:
