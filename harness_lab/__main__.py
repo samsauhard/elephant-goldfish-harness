@@ -9,6 +9,8 @@ from pathlib import Path
 from uuid import uuid4
 
 from .client import LocalClient, ModelError, ScriptedClient
+from .contracts import validate_draft, validate_task
+from .direct import direct_config, run_direct
 from .prompts import ROOT
 from .runtime import run
 
@@ -30,13 +32,13 @@ def new_run(output, label):
 def write_metadata(path, client, config):
     safe_config = {k: v for k, v in config.items() if k in (
         "base_url", "model", "json_mode", "max_requests", "max_output_tokens",
-        "timeout_seconds", "transport_retries", "min_interval_seconds", "review_mode")}
+        "timeout_seconds", "transport_retries", "min_interval_seconds", "review_mode", "approach")}
     metadata = {"mode": client.mode, "configuration": safe_config, "attempts": client.attempts,
                 "usage": client.usage if client.usage_available else None,
                 "resolved_models": sorted(getattr(client, "resolved_models", [])),
                 "cost_usd": None, "note": "Cost not reported or estimated. Router aliases may select different models.",
                 "source_sha256": {name: hashlib.sha256((ROOT / "harness_lab" / name).read_bytes()).hexdigest()
-                                  for name in ("runtime.py", "contracts.py", "prompts.py", "client.py", "grounded.py")},
+                                  for name in ("runtime.py", "contracts.py", "prompts.py", "client.py", "grounded.py", "direct.py", "__main__.py")},
                 "egm": json.loads((ROOT / "vendor/elephant-goldfish/UPSTREAM.json").read_text(encoding="utf-8"))}
     (path / "metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
 
@@ -89,6 +91,32 @@ def evaluation(args, config):
     return 0 if all(row["completed"] for row in rows) else 1
 
 
+def review_existing(args, config):
+    """Expose three approaches over the same supplied draft; no author generation."""
+    task, draft = load_json(args.task), load_json(args.draft)
+    validate_task(task)
+    validate_draft(draft)
+    config = dict(config, approach=args.approach)
+    if args.model:
+        config["model"] = args.model
+    if args.approach == "direct":
+        config = direct_config(config)
+    else:
+        config["review_mode"] = "legacy" if args.approach == "egm" else "grounded"
+    path = new_run(args.output, args.approach)
+    client = LocalClient(config, path)
+    if args.approach == "direct":
+        result = run_direct(task, draft, client, path)
+    else:
+        result = run(task, client, path, initial_draft=draft, max_revisions=0,
+                     review_mode=config["review_mode"])
+    write_metadata(path, client, config)
+    print_result(result, path)
+    if result["status"] in ("response_received_unvalidated", "ready_for_human_review"):
+        return 0
+    return 2 if result["status"] == "needs_attention" else 1
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Harness Lab: local API design review with Elephant and isolated Goldfish.")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -104,6 +132,13 @@ def main(argv=None):
     live.add_argument("--draft", help="Start from a saved draft; author generation is skipped")
     live.add_argument("--review-mode", choices=("legacy", "grounded"), default="legacy",
                       help="Grounded mode uses passage IDs and requires requirement/failure links")
+    review = sub.add_parser("review", help="Review the same saved design with direct, EGM, or grounded calls")
+    review.add_argument("--approach", required=True, choices=("direct", "egm", "grounded"))
+    review.add_argument("--task", default=str(ROOT / "examples/review-task.json"))
+    review.add_argument("--draft", default=str(ROOT / "examples/review-draft.json"))
+    review.add_argument("--config", default="config.local.json")
+    review.add_argument("--model", help="Override the configured model/routing group")
+    review.add_argument("--output", default="runs")
     evaluate = sub.add_parser("evaluate", help="Live seeded review evaluation; never uses scripted model outputs")
     evaluate.add_argument("--config", default="config.local.json")
     evaluate.add_argument("--output", default="runs")
@@ -125,6 +160,8 @@ def main(argv=None):
                 return 0
             if args.command == "evaluate":
                 return evaluation(args, config)
+            if args.command == "review":
+                return review_existing(args, config)
             path = new_run(args.output, "live")
             client = LocalClient(config, path)
             config["review_mode"] = args.review_mode

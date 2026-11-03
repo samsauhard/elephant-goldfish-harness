@@ -1,0 +1,25 @@
+{
+  "title": "Asynchronous export publication",
+  "problem": "Publish durable export results and send completion callbacks.",
+  "goals": [
+    "Only the current lease holder may publish a result",
+    "Recover completion notification after process crashes"
+  ],
+  "design": "POST /exports returns 202 and a customer-scoped job_id. API authorization checks tenant ownership for status and result reads. Input size is capped at 64 KiB. The database durably holds job state, current epoch, lease expiry, and result_uri.\n\nA worker atomically claims a pending or expired job, increments epoch, and records its owner and 30-second expiry. It renews every ten seconds while running. After reading the input it writes a new immutable artifact version under a unique object name.\n\nAfter upload, the worker commits UPDATE jobs SET status='completed', result_uri=:uploaded_uri WHERE job_id=:id. Completion does not otherwise consult lease state. The lease exists to select a worker when a job is taken; each artifact version is immutable, so writes never overwrite each other's bytes.\n\nAfter committing completed, that same process adds (job_id, callback_url) to its in-memory sender queue. The sender delivers a signed completion callback with bounded backoff. On restart the recovery scan selects pending, running-with-expired-lease, and callback_failed jobs; completed jobs are already terminal and are skipped.\n\nRetry bookkeeping is persisted after the sender starts an attempt. Receivers deduplicate job_id. Callback secrets and destinations have existing validation and rotation support. Orphan artifact versions expire after seven days. No claim is made that temporary compute or storage is allocated exactly once.",
+  "alternatives": [
+    "The selected database-backed design reuses existing transactions and recovery procedures.",
+    "A managed streaming platform would add operational integration without being required at this load.",
+    "Synchronous processing would couple client latency to background work and does not fit the existing API contract."
+  ],
+  "risks": [
+    "A process or database outage delays service; recovery within ten minutes is accepted.",
+    "State-transition ordering and expiry boundaries require targeted concurrency and crash tests.",
+    "Do not infer protections beyond the mechanisms explicitly described in the design."
+  ],
+  "acceptance_tests": [
+    "Pause an old worker across a lease transfer and observe publication state.",
+    "Crash around the database commit and queue operation; every completed job must retain a delivery path.",
+    "Verify duplicate callback acknowledgements and bounded delivery attempts."
+  ],
+  "open_questions": []
+}

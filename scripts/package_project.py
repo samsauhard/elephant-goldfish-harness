@@ -4,7 +4,7 @@ from zipfile import ZIP_DEFLATED, ZipFile
 
 ROOT = Path(__file__).resolve().parent.parent
 FILES = ("README.md", "LICENSE", "THIRD_PARTY_NOTICES.md", ".gitignore", "config.example.json")
-FOLDERS = ("harness_lab", "tests", "examples", "docs", "scripts", "benchmarks", "vendor")
+FOLDERS = ("harness_lab", "tests", "examples", "docs", "scripts", "benchmarks", "vendor", "site")
 
 
 def main():

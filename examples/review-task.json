@@ -1,0 +1,10 @@
+{
+  "title": "Asynchronous export publication",
+  "brief": "Publish durable export results and send completion callbacks.",
+  "references": [
+    "Review only whether the stated design meets its explicit requirements under the stated failure model. This is an internal service for 100 customers and 1000 operations/day. One API process and one database are deliberate choices; a ten-minute infrastructure outage is acceptable. Ordinary HTTPS libraries validate certificates. Authentication, parameter binding, input limits, and secret redaction are already implemented. Do not invent multi-region, enterprise scaling, glossary, or extra-alternative requirements. A major finding needs a concrete allowed execution that violates a stated requirement. Suggestions that do not establish such an execution are nits. A correct design may receive zero findings.",
+    "Once a lease has transferred to a new worker, the former worker must not change the job's published result or enqueue a completion notice.",
+    "Every completed job must eventually produce at least one completion callback, including a process crash immediately after its database commit. Callback receivers deduplicate by job_id. Transport retries are bounded; a terminal failure is recorded after five attempts within 24 hours.",
+    "Workers may pause indefinitely and resume after their 30-second lease expires. Each acquisition increments a monotone epoch. Job creation is already idempotent. Artifact PUTs create immutable uniquely named versions, and only the result pointer on the job row publishes an artifact. An unreferenced version is later garbage-collected."
+  ]
+}

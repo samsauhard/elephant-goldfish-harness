@@ -1,8 +1,32 @@
 # Harness Lab
 
-A small Python harness that drafts an API design, reviews it with independent Elephant-Goldfish model calls, and proposes revisions. It uses basic HTTP requests and the Python standard library, so the orchestration is easy to inspect.
+A small Python project with three runnable approaches to API design review: a direct model API call, independent Elephant-Goldfish reviews, and EGM with grounded evidence checks. It uses basic HTTP requests and the Python standard library, so the orchestration is easy to inspect.
 
 The runtime enforces context boundaries, structured outputs, request budgets, and independent reviews, with evaluation fixtures and trace logs for diagnosing failures. It produces design artifacts for human review.
+
+## Three runnable approaches
+
+After configuring the API as described below, run these from the repository root:
+
+```powershell
+python -m harness_lab review --approach direct
+python -m harness_lab review --approach egm
+python -m harness_lab review --approach grounded
+```
+
+All three review the same checked-in synthetic worker design in `examples/review-draft.json` with requirements from `examples/review-task.json`. They skip author generation and revision, so the input stays the same. Each invocation writes a separate directory under `runs/`. Use `--model YOUR_MODEL_ID` to override the configured routing group, or `--task task.json --draft draft.json` for your own inputs.
+
+| Approach | Execution | Generated-output checks |
+| --- | --- | --- |
+| `direct` | One generic reviewer; one HTTP attempt; no retry | None; saves the response as unvalidated text |
+| `egm` | Two independent EGM reviewer contexts | Original JSON and exact-quotation validation, one correction per review |
+| `grounded` | The same two EGM reviewer roles | Document-bound passage IDs, requirement links and failure scenarios for major findings, one correction per review |
+
+The direct path still uses common credential loading, API-envelope checks, request limits, tracing, and configured-key redaction. It does not parse or validate the generated review. The EGM path already has a basic harness; grounded mode adds stronger evidence requirements.
+
+**Which is best?** The archived single-generic-review baseline gave the best token efficiency on the six development designs: 6/6 planted bugs found with 19,845 tokens, versus 53,620 for original EGM and 83,518 for grounded EGM. Grounded mode reduced assistant-audited unsupported serious warnings versus original EGM, but used more tokens and corrections. There is no proven overall winner. The archived generic baseline included validation and repair; it is **not a benchmark of the new raw `direct` command**.
+
+See the [three-approach guide and complete comparison](docs/three-approaches.md). The [interactive comparison website source](site/README.md) is included and can be served locally without model calls.
 
 ## What Elephant-Goldfish means
 
@@ -148,8 +172,10 @@ The [grounded-mode results](docs/grounded-benchmark.md) show the tradeoff: the s
 | `harness_lab/contracts.py` | Typed boundaries and deterministic evidence validation |
 | `harness_lab/grounded.py` | Version-bound passage IDs, requirement links, counterexample contracts, scope adapter |
 | `harness_lab/client.py` | Basic HTTP integration, request accounting, retries, tracing |
+| `harness_lab/direct.py` | Single-request, unvalidated generic review baseline |
 | `harness_lab/__main__.py` | Reproducible runs, configuration, seeded evaluation |
 | `tests/` | Isolation, failure injection, budget enforcement, malformed-output behavior |
+| `site/` | Static three-approach comparison, recorded metrics, and inventory walkthrough |
 
 Further evaluation requires a held-out task set comparing author-only designs with reviewed designs, using a fixed model and independent human scoring. Potential extensions include persistent checkpoints and a trace viewer; changes should address observed failures and include reproducible measurements.
 
