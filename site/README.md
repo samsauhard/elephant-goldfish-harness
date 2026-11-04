@@ -15,3 +15,7 @@ Open <http://127.0.0.1:8765/>. Stop the server with Ctrl+C. There is no build st
 The original EGM measurement also includes a basic harness. The third approach adds the grounded evidence contract. These are not three cleanly isolated levels of all harness functionality. See [the three-approach guide](../docs/three-approaches.md).
 
 The page preserves the November 2 experiment's historical 70-test count. Current source tests and the runnable entry points are described in the repository README and guide. The hosted Sites deployment is private; these standalone assets can be served independently.
+
+## Working webpage comparison
+
+The separate [Daymark build experiment](buildoff/README.md) is available at <http://127.0.0.1:8765/buildoff/> using the same server. It contains the direct, EGM, and grounded EGM HTML outputs, interactive checks, and the November 3, 2026 results. These webpage-generation measurements are separate from the older design-review benchmark shown on the root page.

@@ -1,0 +1,104 @@
+{
+  "date": "2026-11-03",
+  "requested_model": "gpt-oss-120b",
+  "task": "Daymark task planner",
+  "trials": 1,
+  "protocol": "protocol.json",
+  "assignments": {
+    "A": "egm",
+    "B": "direct",
+    "C": "grounded"
+  },
+  "accounting": "Each arm includes shared initial generation and its own failures. Reported tokens exclude any unreported failed-request usage. HTTP time is observed request duration, not server compute. One task and unequal budgets; not general model accuracy.",
+  "arms": {
+    "egm": {
+      "description": "The same initial page, reviewed independently for comprehension and design quality, then revised once.",
+      "tokens": 33487,
+      "seconds": 660.39,
+      "processingSeconds": 578.46,
+      "attempts": 8,
+      "corrections": 1,
+      "models": [
+        "@cf/openai/gpt-oss-120b",
+        "openai/gpt-oss-120b"
+      ],
+      "routes": [
+        "cloudflare/@cf/openai/gpt-oss-120b",
+        "groq/openai/gpt-oss-120b"
+      ],
+      "sha256": "6efebd0f51e1dd398031d88096003843c290991366b3ff7ff08f6ac17d225709",
+      "note": "One initial request timed out; its 120-second wait and attempt are included. This branch needed 1 review restart(s) following HTTP 502 failures; those attempts and time are included. Token usage for failed requests was not reported. HTTP time is observed request duration, including failed calls, not measured server compute. Final HTML was not hand-edited.",
+      "verification": {
+        "desktop": "10 / 10 checks passed · tested at 837 px",
+        "mobile": "10 / 10 checks passed · tested at 390 px",
+        "stress": "FAIL — Long unbroken title stays within the viewport. Tested at 390 px. Content width 1679 px exceeds viewport 390 px"
+      },
+      "label": "A",
+      "source": "builds/egm.html",
+      "browser_record": {
+        "version": "A",
+        "desktop": "10 / 10 checks passed · tested at 837 px\n✓\nThree initial tasks and accurate counts\n✓\nAdd task updates the list and counters\n✓\nBlank titles are rejected\n✓\nComplete task updates both counters\n✓\nDone filter shows only completed tasks\n✓\nActive filter excludes completed tasks\n✓\nSearch combines with filter, ignoring case\n✓\nDeletion after filtering targets the correct task\n✓\nTask titles render as literal text\n✓\nNo horizontal page overflow at this width",
+        "mobile": "10 / 10 checks passed · tested at 390 px\n✓\nThree initial tasks and accurate counts\n✓\nAdd task updates the list and counters\n✓\nBlank titles are rejected\n✓\nComplete task updates both counters\n✓\nDone filter shows only completed tasks\n✓\nActive filter excludes completed tasks\n✓\nSearch combines with filter, ignoring case\n✓\nDeletion after filtering targets the correct task\n✓\nTask titles render as literal text\n✓\nNo horizontal page overflow at this width",
+        "stress": "FAIL — Long unbroken title stays within the viewport. Tested at 390 px. Content width 1679 px exceeds viewport 390 px"
+      }
+    },
+    "direct": {
+      "description": "The original API-generated page. No reviewer or revision. The first transport attempt timed out; the second produced this page.",
+      "tokens": 4847,
+      "seconds": 229.69,
+      "processingSeconds": 229.58,
+      "attempts": 2,
+      "corrections": 0,
+      "models": [
+        "@cf/openai/gpt-oss-120b"
+      ],
+      "routes": [
+        "cloudflare/@cf/openai/gpt-oss-120b"
+      ],
+      "sha256": "b96ffa73590065910269eb3e131b2cac1a85cba49bf3aaff41572e2019f99052",
+      "note": "One initial request timed out; its 120-second wait and attempt are included. Token usage for failed requests was not reported. HTTP time is observed request duration, including failed calls, not measured server compute. Final HTML was not hand-edited.",
+      "verification": {
+        "desktop": "10 / 10 checks passed · tested at 837 px",
+        "mobile": "10 / 10 checks passed · tested at 390 px",
+        "stress": "FAIL — Long unbroken title stays within the viewport. Tested at 390 px. Content width 1679 px exceeds viewport 390 px"
+      },
+      "label": "B",
+      "source": "builds/direct.html",
+      "browser_record": {
+        "version": "B",
+        "desktop": "10 / 10 checks passed · tested at 837 px\n✓\nThree initial tasks and accurate counts\n✓\nAdd task updates the list and counters\n✓\nBlank titles are rejected\n✓\nComplete task updates both counters\n✓\nDone filter shows only completed tasks\n✓\nActive filter excludes completed tasks\n✓\nSearch combines with filter, ignoring case\n✓\nDeletion after filtering targets the correct task\n✓\nTask titles render as literal text\n✓\nNo horizontal page overflow at this width",
+        "mobile": "10 / 10 checks passed · tested at 390 px\n✓\nThree initial tasks and accurate counts\n✓\nAdd task updates the list and counters\n✓\nBlank titles are rejected\n✓\nComplete task updates both counters\n✓\nDone filter shows only completed tasks\n✓\nActive filter excludes completed tasks\n✓\nSearch combines with filter, ignoring case\n✓\nDeletion after filtering targets the correct task\n✓\nTask titles render as literal text\n✓\nNo horizontal page overflow at this width",
+        "stress": "FAIL — Long unbroken title stays within the viewport. Tested at 390 px. Content width 1679 px exceeds viewport 390 px"
+      }
+    },
+    "grounded": {
+      "description": "The same initial page, reviewed with passage IDs and required failure arguments for serious issues, then revised once.",
+      "tokens": 44494,
+      "seconds": 682.05,
+      "processingSeconds": 571.65,
+      "attempts": 10,
+      "corrections": 1,
+      "models": [
+        "@cf/openai/gpt-oss-120b"
+      ],
+      "routes": [
+        "cloudflare/@cf/openai/gpt-oss-120b"
+      ],
+      "sha256": "d514f02e2a2e47ee7ab445f78f6b3f9a56f409a3dae9ee100b0e4bc5f6bb2c8f",
+      "note": "One initial request timed out; its 120-second wait and attempt are included. This branch needed 2 review restart(s) following HTTP 502 failures; those attempts and time are included. Grounded review output budget was increased from 2,300 to 6,000 tokens for its last recovery attempt; this is not an equal-budget comparison. Token usage for failed requests was not reported. HTTP time is observed request duration, including failed calls, not measured server compute. Final HTML was not hand-edited.",
+      "verification": {
+        "desktop": "10 / 10 checks passed · tested at 837 px",
+        "mobile": "10 / 10 checks passed · tested at 390 px",
+        "stress": "PASS — Long unbroken title stays within the viewport. Tested at 390 px."
+      },
+      "label": "C",
+      "source": "builds/grounded.html",
+      "browser_record": {
+        "version": "C",
+        "desktop": "10 / 10 checks passed · tested at 837 px\n✓\nThree initial tasks and accurate counts\n✓\nAdd task updates the list and counters\n✓\nBlank titles are rejected\n✓\nComplete task updates both counters\n✓\nDone filter shows only completed tasks\n✓\nActive filter excludes completed tasks\n✓\nSearch combines with filter, ignoring case\n✓\nDeletion after filtering targets the correct task\n✓\nTask titles render as literal text\n✓\nNo horizontal page overflow at this width",
+        "mobile": "10 / 10 checks passed · tested at 390 px\n✓\nThree initial tasks and accurate counts\n✓\nAdd task updates the list and counters\n✓\nBlank titles are rejected\n✓\nComplete task updates both counters\n✓\nDone filter shows only completed tasks\n✓\nActive filter excludes completed tasks\n✓\nSearch combines with filter, ignoring case\n✓\nDeletion after filtering targets the correct task\n✓\nTask titles render as literal text\n✓\nNo horizontal page overflow at this width",
+        "stress": "PASS — Long unbroken title stays within the viewport. Tested at 390 px."
+      }
+    }
+  }
+}

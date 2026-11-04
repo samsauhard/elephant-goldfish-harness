@@ -1,0 +1,50 @@
+--- Direct API starting page
++++ egm revised page
+@@ -160,9 +160,9 @@
+     <label>
+       Priority
+       <select id="task-priority">
+-        <option>High</option>
+-        <option selected>Medium</option>
+-        <option>Low</option>
++        <option value="High">High</option>
++        <option value="Medium" selected>Medium</option>
++        <option value="Low">Low</option>
+       </select>
+     </label>
+     <button type="submit" id="add-task">Add task</button>
+@@ -254,7 +254,6 @@
+   }
+ 
+   function render() {
+-    // Filter tasks
+     const term = searchTerm.trim().toLowerCase();
+     const filtered = tasks.filter(t => {
+       const matchesSearch = !term || t.title.toLowerCase().includes(term);
+@@ -264,15 +263,9 @@
+       return matchesSearch && matchesFilter;
+     });
+ 
+-    // Clear list
+     taskList.innerHTML = '';
+-    if (filtered.length === 0) {
+-      emptyState.hidden = false;
+-    } else {
+-      emptyState.hidden = true;
+-    }
+-
+-    // Render each task
++    emptyState.hidden = filtered.length !== 0;
++
+     filtered.forEach(task => {
+       const li = document.createElement('li');
+       li.className = 'task-item' + (task.completed ? ' completed' : '');
+@@ -363,7 +356,7 @@
+     render();
+   });
+ 
+-  // Accessibility: clear error on input
++  // Clear error on input
+   taskTitleInput.addEventListener('input', () => {
+     if (errorDiv.textContent) errorDiv.textContent = '';
+   });

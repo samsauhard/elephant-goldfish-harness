@@ -1,0 +1,215 @@
+{
+  "status": "needs_attention",
+  "completed": true,
+  "failure_reason": "revision_limit_reached",
+  "final_round": 0,
+  "revisions_used": 0,
+  "max_revisions": 0,
+  "correction_attempts": 1,
+  "drafts": [
+    "draft-0.json"
+  ],
+  "final_draft": "draft-0.json",
+  "final_design": "design.md",
+  "reviews": {
+    "comprehension": {
+      "summary": "The implementation largely satisfies the stated goals and requirements, but there are two notable issues: a potential horizontal overflow with long unbroken task titles that breaches the no‑overflow design constraint, and missing explicit type=\"button\" on filter buttons which could cause unintended form submissions if the markup changes.",
+      "findings": [
+        {
+          "severity": "major",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "    // Render each task\n    filtered.forEach(task => {\n      const li = document.createElement('li');\n      li.className = 'task-item' + (task.completed ? ' completed' : '');\n      li.dataset.taskId = task.id;",
+          "issue": "Long unbroken task titles can cause horizontal overflow, violating the goal that the layout must have no horizontal overflow at 390 px and larger widths.",
+          "recommendation": "Add CSS to break long words, e.g., `word-break: break-word;` or `overflow-wrap: anywhere;` on the title element, ensuring the layout stays within the viewport."
+        },
+        {
+          "severity": "nit",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "  <div id=\"task-controls\">\n    <div class=\"filter-group\" role=\"group\" aria-label=\"Task filters\">\n      <button id=\"filter-all\" aria-pressed=\"true\">All</button>\n      <button id=\"filter-active\" aria-pressed=\"false\">Active</button>\n      <button id=\"filter-done\" aria-pressed=\"false\">Done</button>\n    </div>\n    <input type=\"text\" id=\"task-search\" placeholder=\"Search tasks…\" aria-label=\"Search tasks\">\n  </div>",
+          "issue": "Filter buttons lack an explicit `type=\"button\"` attribute. While they are currently outside the form, moving them inside a form later would cause them to act as submit buttons, leading to unintended page reloads.",
+          "recommendation": "Add `type=\"button\"` to each filter button (`<button id=\"filter-all\" type=\"button\" …>` etc.) to guarantee they never trigger form submission."
+        }
+      ]
+    },
+    "design_critic": {
+      "summary": "The implementation meets most functional and accessibility requirements, but it fails the mandatory alternatives evaluation and has two usability risks: possible horizontal overflow with long titles and lack of screen‑reader announcement for the empty‑state message.",
+      "findings": [
+        {
+          "severity": "blocker",
+          "category": "scope",
+          "section": "alternatives",
+          "evidence": "A static mockup would not satisfy the interactive requirements.",
+          "issue": "The specification does not provide a proper alternatives analysis. It only mentions that a static mockup would not satisfy requirements, without evaluating any other viable designs or documenting why they were rejected.",
+          "recommendation": "Add a concise alternatives section that considers at least one other approach (e.g., using a framework, server‑side rendering, or localStorage persistence) and explain why the chosen vanilla‑JS single‑page solution is preferred based on complexity, performance, and cost."
+        },
+        {
+          "severity": "major",
+          "category": "clarity",
+          "section": "design",
+          "evidence": "<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<title>Daymark – Daily Task Planner</title>\n<style>\n:root{\n  --bg:#faf8f0;\n  --text:#222;\n  --accent:#2a7d2a;\n  --border:#ddd;\n  --radius:4px;\n  --focus:#2a7d2a;\n  --font-sans:system-ui, -apple-system, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif;\n}\n*{box-sizing:border-box;}\nhtml{font-size:16px;}\nbody{\n  margin:0;\n  padding:1rem;\n  background:var(--bg);\n  color:var(--text);\n  font-family:var(--font-sans);\n  line-height:1.5;\n}\nh1{margin:0 0 .5rem;font-size:1.75rem;}\n.container{\n  max-width:800px;\n  margin:auto;\n}\nform{\n  display:flex;\n  flex-wrap:wrap;\n  gap:1rem;\n  align-items:flex-end;\n}\nlabel{\n  display:flex;\n  flex-direction:column;\n  font-weight:600;\n}\ninput[type=text], select{\n  padding:.4rem .6rem;\n  border:1px solid var(--border);\n  border-radius:var(--radius);\n  font:inherit;\n}\ninput[type=text]:focus, select:focus, button:focus{\n  outline:2px solid var(--focus);\n  outline-offset:2px;\n}\nbutton{\n  padding:.5rem 1rem;\n  background:var(--accent);\n  color:#fff;\n  border:none;\n  border-radius:var(--radius);\n  cursor:pointer;\n  font:inherit;\n}\nbutton:hover{background:#236d23;}\nbutton:focus{outline:2px solid var(--focus);outline-offset:2px;}\n.error{\n  color:#b00;\n  margin-top:.2rem;\n}\n#task-controls{\n  display:flex;\n  flex-wrap:wrap;\n  gap:.5rem;\n  margin:1rem 0;\n}\n.filter-group button{\n  background:#e0e0e0;\n  color:#000;\n}\n.filter-group button[aria-pressed=\"true\"]{\n  background:var(--accent);\n  color:#fff;\n}\n#task-search{\n  flex:1 1 200px;\n  padding:.4rem .6rem;\n  border:1px solid var(--border);\n  border-radius:var(--radius);\n}\n#counters{\n  margin:1rem 0;\n  font-size:.9rem;\n}\n#counters span{\n  margin-right:1rem;\n}\n#task-list{\n  list-style:none;\n  padding:0;\n  margin:0;\n}\n.task-item{\n  display:flex;\n  align-items:center;\n  justify-content:space-between;\n  padding:.6rem;\n  border-bottom:1px solid var(--border);\n}\n.task-item:last-child{border-bottom:none;}\n.task-info{\n  display:flex;\n  align-items:center;\n  gap:.5rem;\n  flex:1;\n}\n.task-info span.title{\n  white-space:pre-wrap;\n}\n.task-info span.priority{\n  font-size:.8rem;\n  padding:.1rem .4rem;\n  border-radius:var(--radius);\n  text-transform:uppercase;\n}\n.priority-high{background:#ffdddd;color:#a00;}\n.priority-medium{background:#fff4c2;color:#a66;}\n.priority-low{background:#ddffdd;color:#060;}\n.completed .title{\n  text-decoration:line-through;\n  opacity:.6;\n}\n.empty{\n  text-align:center;\n  color:#666;\n  margin:2rem 0;\n}\n.sr-only{\n  position:absolute;\n  width:1px;\n  height:1px;\n  padding:0;\n  margin:-1px;\n  overflow:hidden;\n  clip:rect(0,0,0,0);\n  white-space:nowrap;\n  border:0;\n}\n.note{\n  font-size:.85rem;\n  color:#555;\n  margin-top:2rem;\n}\n</style>\n</head>\n<body>\n<div class=\"container\">\n  <h1>Daymark</h1>\n  <form id=\"add-form\" novalidate>\n    <label>\n      Task title\n      <input type=\"text\" id=\"task-title\" autocomplete=\"off\" required>\n    </label>\n    <label>\n      Priority\n      <select id=\"task-priority\">\n        <option>High</option>\n        <option selected>Medium</option>\n        <option>Low</option>\n      </select>\n    </label>\n    <button type=\"submit\" id=\"add-task\">Add task</button>\n    <div id=\"error\" class=\"error\" role=\"alert\" aria-live=\"assertive\"></div>\n  </form>",
+          "issue": "Long task titles can cause horizontal overflow because the flex container (.task-item) does not wrap or truncate the title, potentially breaking the \"no horizontal overflow\" requirement at narrow viewports (390 px).",
+          "recommendation": "Add CSS to constrain the title width (e.g., `max-width: 100%; overflow: hidden; text-overflow: ellipsis;` or allow wrapping with `word-break: break-word;`) and ensure the flex layout respects the container width."
+        },
+        {
+          "severity": "major",
+          "category": "reliability",
+          "section": "design",
+          "evidence": "  <ul id=\"task-list\" aria-live=\"polite\"></ul>\n  <p id=\"empty-state\" class=\"empty\" hidden>No tasks match your criteria.</p>",
+          "issue": "The empty‑state paragraph is toggled via the `hidden` attribute but lacks an ARIA live region, so screen‑reader users are not notified when the list becomes empty after filtering or deletion.",
+          "recommendation": "Add `role=\"status\"` and `aria-live=\"polite\"` (or reuse the existing status region) to the empty‑state element, and ensure it is announced when shown."
+        }
+      ]
+    }
+  },
+  "review_artifacts": [
+    "grounding-0.json",
+    "review-0-comprehension-grounded.json",
+    "review-0-comprehension.json",
+    "review-0-design_critic-grounded.json",
+    "review-0-design_critic.json"
+  ],
+  "outstanding_findings": [
+    {
+      "severity": "major",
+      "category": "reliability",
+      "section": "design",
+      "evidence": "    // Render each task\n    filtered.forEach(task => {\n      const li = document.createElement('li');\n      li.className = 'task-item' + (task.completed ? ' completed' : '');\n      li.dataset.taskId = task.id;",
+      "issue": "Long unbroken task titles can cause horizontal overflow, violating the goal that the layout must have no horizontal overflow at 390 px and larger widths.",
+      "recommendation": "Add CSS to break long words, e.g., `word-break: break-word;` or `overflow-wrap: anywhere;` on the title element, ensuring the layout stays within the viewport.",
+      "persona": "comprehension"
+    },
+    {
+      "severity": "nit",
+      "category": "reliability",
+      "section": "design",
+      "evidence": "  <div id=\"task-controls\">\n    <div class=\"filter-group\" role=\"group\" aria-label=\"Task filters\">\n      <button id=\"filter-all\" aria-pressed=\"true\">All</button>\n      <button id=\"filter-active\" aria-pressed=\"false\">Active</button>\n      <button id=\"filter-done\" aria-pressed=\"false\">Done</button>\n    </div>\n    <input type=\"text\" id=\"task-search\" placeholder=\"Search tasks…\" aria-label=\"Search tasks\">\n  </div>",
+      "issue": "Filter buttons lack an explicit `type=\"button\"` attribute. While they are currently outside the form, moving them inside a form later would cause them to act as submit buttons, leading to unintended page reloads.",
+      "recommendation": "Add `type=\"button\"` to each filter button (`<button id=\"filter-all\" type=\"button\" …>` etc.) to guarantee they never trigger form submission.",
+      "persona": "comprehension"
+    },
+    {
+      "severity": "blocker",
+      "category": "scope",
+      "section": "alternatives",
+      "evidence": "A static mockup would not satisfy the interactive requirements.",
+      "issue": "The specification does not provide a proper alternatives analysis. It only mentions that a static mockup would not satisfy requirements, without evaluating any other viable designs or documenting why they were rejected.",
+      "recommendation": "Add a concise alternatives section that considers at least one other approach (e.g., using a framework, server‑side rendering, or localStorage persistence) and explain why the chosen vanilla‑JS single‑page solution is preferred based on complexity, performance, and cost.",
+      "persona": "design_critic"
+    },
+    {
+      "severity": "major",
+      "category": "clarity",
+      "section": "design",
+      "evidence": "<!doctype html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<title>Daymark – Daily Task Planner</title>\n<style>\n:root{\n  --bg:#faf8f0;\n  --text:#222;\n  --accent:#2a7d2a;\n  --border:#ddd;\n  --radius:4px;\n  --focus:#2a7d2a;\n  --font-sans:system-ui, -apple-system, \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif;\n}\n*{box-sizing:border-box;}\nhtml{font-size:16px;}\nbody{\n  margin:0;\n  padding:1rem;\n  background:var(--bg);\n  color:var(--text);\n  font-family:var(--font-sans);\n  line-height:1.5;\n}\nh1{margin:0 0 .5rem;font-size:1.75rem;}\n.container{\n  max-width:800px;\n  margin:auto;\n}\nform{\n  display:flex;\n  flex-wrap:wrap;\n  gap:1rem;\n  align-items:flex-end;\n}\nlabel{\n  display:flex;\n  flex-direction:column;\n  font-weight:600;\n}\ninput[type=text], select{\n  padding:.4rem .6rem;\n  border:1px solid var(--border);\n  border-radius:var(--radius);\n  font:inherit;\n}\ninput[type=text]:focus, select:focus, button:focus{\n  outline:2px solid var(--focus);\n  outline-offset:2px;\n}\nbutton{\n  padding:.5rem 1rem;\n  background:var(--accent);\n  color:#fff;\n  border:none;\n  border-radius:var(--radius);\n  cursor:pointer;\n  font:inherit;\n}\nbutton:hover{background:#236d23;}\nbutton:focus{outline:2px solid var(--focus);outline-offset:2px;}\n.error{\n  color:#b00;\n  margin-top:.2rem;\n}\n#task-controls{\n  display:flex;\n  flex-wrap:wrap;\n  gap:.5rem;\n  margin:1rem 0;\n}\n.filter-group button{\n  background:#e0e0e0;\n  color:#000;\n}\n.filter-group button[aria-pressed=\"true\"]{\n  background:var(--accent);\n  color:#fff;\n}\n#task-search{\n  flex:1 1 200px;\n  padding:.4rem .6rem;\n  border:1px solid var(--border);\n  border-radius:var(--radius);\n}\n#counters{\n  margin:1rem 0;\n  font-size:.9rem;\n}\n#counters span{\n  margin-right:1rem;\n}\n#task-list{\n  list-style:none;\n  padding:0;\n  margin:0;\n}\n.task-item{\n  display:flex;\n  align-items:center;\n  justify-content:space-between;\n  padding:.6rem;\n  border-bottom:1px solid var(--border);\n}\n.task-item:last-child{border-bottom:none;}\n.task-info{\n  display:flex;\n  align-items:center;\n  gap:.5rem;\n  flex:1;\n}\n.task-info span.title{\n  white-space:pre-wrap;\n}\n.task-info span.priority{\n  font-size:.8rem;\n  padding:.1rem .4rem;\n  border-radius:var(--radius);\n  text-transform:uppercase;\n}\n.priority-high{background:#ffdddd;color:#a00;}\n.priority-medium{background:#fff4c2;color:#a66;}\n.priority-low{background:#ddffdd;color:#060;}\n.completed .title{\n  text-decoration:line-through;\n  opacity:.6;\n}\n.empty{\n  text-align:center;\n  color:#666;\n  margin:2rem 0;\n}\n.sr-only{\n  position:absolute;\n  width:1px;\n  height:1px;\n  padding:0;\n  margin:-1px;\n  overflow:hidden;\n  clip:rect(0,0,0,0);\n  white-space:nowrap;\n  border:0;\n}\n.note{\n  font-size:.85rem;\n  color:#555;\n  margin-top:2rem;\n}\n</style>\n</head>\n<body>\n<div class=\"container\">\n  <h1>Daymark</h1>\n  <form id=\"add-form\" novalidate>\n    <label>\n      Task title\n      <input type=\"text\" id=\"task-title\" autocomplete=\"off\" required>\n    </label>\n    <label>\n      Priority\n      <select id=\"task-priority\">\n        <option>High</option>\n        <option selected>Medium</option>\n        <option>Low</option>\n      </select>\n    </label>\n    <button type=\"submit\" id=\"add-task\">Add task</button>\n    <div id=\"error\" class=\"error\" role=\"alert\" aria-live=\"assertive\"></div>\n  </form>",
+      "issue": "Long task titles can cause horizontal overflow because the flex container (.task-item) does not wrap or truncate the title, potentially breaking the \"no horizontal overflow\" requirement at narrow viewports (390 px).",
+      "recommendation": "Add CSS to constrain the title width (e.g., `max-width: 100%; overflow: hidden; text-overflow: ellipsis;` or allow wrapping with `word-break: break-word;`) and ensure the flex layout respects the container width.",
+      "persona": "design_critic"
+    },
+    {
+      "severity": "major",
+      "category": "reliability",
+      "section": "design",
+      "evidence": "  <ul id=\"task-list\" aria-live=\"polite\"></ul>\n  <p id=\"empty-state\" class=\"empty\" hidden>No tasks match your criteria.</p>",
+      "issue": "The empty‑state paragraph is toggled via the `hidden` attribute but lacks an ARIA live region, so screen‑reader users are not notified when the list becomes empty after filtering or deletion.",
+      "recommendation": "Add `role=\"status\"` and `aria-live=\"polite\"` (or reuse the existing status region) to the empty‑state element, and ensure it is announced when shown.",
+      "persona": "design_critic"
+    }
+  ],
+  "remaining_major_findings": 4,
+  "validation_errors": [
+    {
+      "stage": "review_0_design_critic",
+      "attempt": 1,
+      "message": "finding.category is unsupported"
+    }
+  ],
+  "errors": [],
+  "review_mode": "grounded",
+  "grounded_reviews": {
+    "comprehension": {
+      "summary": "The implementation largely satisfies the stated goals and requirements, but there are two notable issues: a potential horizontal overflow with long unbroken task titles that breaches the no‑overflow design constraint, and missing explicit type=\"button\" on filter buttons which could cause unintended form submissions if the markup changes.",
+      "findings": [
+        {
+          "severity": "major",
+          "category": "reliability",
+          "passage_id": "e214163417ce-d27",
+          "requirement_ids": [
+            "e214163417ce-d4"
+          ],
+          "issue": "Long unbroken task titles can cause horizontal overflow, violating the goal that the layout must have no horizontal overflow at 390 px and larger widths.",
+          "recommendation": "Add CSS to break long words, e.g., `word-break: break-word;` or `overflow-wrap: anywhere;` on the title element, ensuring the layout stays within the viewport.",
+          "counterexample": {
+            "scenario": "User adds a task with a title consisting of a 200‑character string without spaces (e.g., \"AAAAAAAA…\"). The title span does not wrap, causing the page to scroll horizontally on a 390 px viewport.",
+            "violation": "The page no longer fits within the viewport, breaching the no‑horizontal‑overflow requirement (e214163417ce-d4)."
+          }
+        },
+        {
+          "severity": "nit",
+          "category": "reliability",
+          "passage_id": "e214163417ce-d12",
+          "requirement_ids": [
+            "e214163417ce-d8"
+          ],
+          "issue": "Filter buttons lack an explicit `type=\"button\"` attribute. While they are currently outside the form, moving them inside a form later would cause them to act as submit buttons, leading to unintended page reloads.",
+          "recommendation": "Add `type=\"button\"` to each filter button (`<button id=\"filter-all\" type=\"button\" …>` etc.) to guarantee they never trigger form submission.",
+          "counterexample": {
+            "scenario": "A developer refactors the markup and places the filter button group inside the `<form id=\"add-form\">`. Clicking the \"Active\" filter now submits the form, causing a page reload and loss of task state.",
+            "violation": "Unexpected form submission violates the requirement that the app must not perform network requests or reloads (implicit in the standalone HTML constraint)."
+          }
+        }
+      ]
+    },
+    "design_critic": {
+      "summary": "The implementation meets most functional and accessibility requirements, but it fails the mandatory alternatives evaluation and has two usability risks: possible horizontal overflow with long titles and lack of screen‑reader announcement for the empty‑state message.",
+      "findings": [
+        {
+          "severity": "blocker",
+          "category": "scope",
+          "passage_id": "e214163417ce-d42",
+          "requirement_ids": [
+            "e214163417ce-d2"
+          ],
+          "issue": "The specification does not provide a proper alternatives analysis. It only mentions that a static mockup would not satisfy requirements, without evaluating any other viable designs or documenting why they were rejected.",
+          "recommendation": "Add a concise alternatives section that considers at least one other approach (e.g., using a framework, server‑side rendering, or localStorage persistence) and explain why the chosen vanilla‑JS single‑page solution is preferred based on complexity, performance, and cost.",
+          "counterexample": {
+            "scenario": "A reviewer checks the specification for compliance with the Feature Specification Standard and finds no documented alternatives, violating the Alternatives Rule.",
+            "violation": "The specification fails to meet the mandatory evaluation of alternatives, breaching the core principle of the standard."
+          }
+        },
+        {
+          "severity": "major",
+          "category": "clarity",
+          "passage_id": "e214163417ce-d11",
+          "requirement_ids": [
+            "e214163417ce-d4"
+          ],
+          "issue": "Long task titles can cause horizontal overflow because the flex container (.task-item) does not wrap or truncate the title, potentially breaking the \"no horizontal overflow\" requirement at narrow viewports (390 px).",
+          "recommendation": "Add CSS to constrain the title width (e.g., `max-width: 100%; overflow: hidden; text-overflow: ellipsis;` or allow wrapping with `word-break: break-word;`) and ensure the flex layout respects the container width.",
+          "counterexample": {
+            "scenario": "A user adds a task with a very long title (e.g., 200 characters). On a 390 px screen the title extends beyond the viewport, creating a horizontal scrollbar.",
+            "violation": "The page exhibits horizontal overflow, violating the design constraint that the layout must work at 390 px without overflow."
+          }
+        },
+        {
+          "severity": "major",
+          "category": "reliability",
+          "passage_id": "e214163417ce-d14",
+          "requirement_ids": [
+            "e214163417ce-d9"
+          ],
+          "issue": "The empty‑state paragraph is toggled via the `hidden` attribute but lacks an ARIA live region, so screen‑reader users are not notified when the list becomes empty after filtering or deletion.",
+          "recommendation": "Add `role=\"status\"` and `aria-live=\"polite\"` (or reuse the existing status region) to the empty‑state element, and ensure it is announced when shown.",
+          "counterexample": {
+            "scenario": "A user filters tasks such that none match; the empty‑state message appears visually but is not announced to a screen‑reader because it has no live region.",
+            "violation": "The feature fails to provide accessible feedback, breaching the accessibility requirements for live status updates."
+          }
+        }
+      ]
+    }
+  },
+  "mode": "live",
+  "model": "gpt-oss-120b",
+  "attempts": 3
+}

@@ -1,0 +1,96 @@
+{
+  "status": "needs_attention",
+  "completed": true,
+  "failure_reason": "revision_limit_reached",
+  "final_round": 0,
+  "revisions_used": 0,
+  "max_revisions": 0,
+  "correction_attempts": 1,
+  "drafts": [
+    "draft-0.json"
+  ],
+  "final_draft": "draft-0.json",
+  "final_design": "design.md",
+  "reviews": {
+    "comprehension": {
+      "summary": "The draft proposes a self‑contained HTML page named Daymark that implements a daily task planner with three initial tasks, UI controls for adding, filtering, searching, counting, and deleting tasks, all using inline CSS and vanilla JavaScript. The provided implementation satisfies the listed requirements—required element IDs, accessibility attributes, error handling, literal title handling, responsive layout, and live status updates—without obvious omissions.",
+      "findings": []
+    },
+    "design_critic": {
+      "summary": "The draft meets most functional requirements but lacks sufficient alternatives analysis and risk coverage, and has a minor omission in the priority selector markup.",
+      "findings": [
+        {
+          "severity": "major",
+          "category": "scope",
+          "section": "alternatives",
+          "evidence": "A static mockup would not satisfy the interactive requirements.",
+          "issue": "Specification requires evaluation of multiple viable alternatives with documented reasons for rejection; only a single alternative is listed, providing no comparative analysis.",
+          "recommendation": "Add at least two alternative designs (e.g., using a JS framework, persisting tasks to localStorage) and explain why each was rejected based on complexity, cost, performance, or scalability."
+        },
+        {
+          "severity": "major",
+          "category": "reliability",
+          "section": "risks",
+          "evidence": "User-entered task text must be treated as literal text.",
+          "issue": "Risks section is incomplete; it addresses only literal text handling and omits other important risks such as XSS, accessibility edge cases, performance on large task lists, and loss of state on page reload.",
+          "recommendation": "Expand the risks list to include security (XSS mitigation), accessibility (focus management, screen‑reader announcements), performance considerations, and user‑experience impact of state loss, with mitigation strategies for each."
+        },
+        {
+          "severity": "nit",
+          "category": "clarity",
+          "section": "design",
+          "evidence": "<option>High</option>\n        <option selected>Medium</option>\n        <option>Low</option>",
+          "issue": "Priority <option> elements lack explicit value attributes, relying on inner text which could cause inconsistencies if display text changes.",
+          "recommendation": "Add value attributes to each option (e.g., <option value=\"High\">High</option>) to decouple display text from the underlying value."
+        }
+      ]
+    }
+  },
+  "review_artifacts": [
+    "review-0-comprehension.json",
+    "review-0-design_critic.json"
+  ],
+  "outstanding_findings": [
+    {
+      "severity": "major",
+      "category": "scope",
+      "section": "alternatives",
+      "evidence": "A static mockup would not satisfy the interactive requirements.",
+      "issue": "Specification requires evaluation of multiple viable alternatives with documented reasons for rejection; only a single alternative is listed, providing no comparative analysis.",
+      "recommendation": "Add at least two alternative designs (e.g., using a JS framework, persisting tasks to localStorage) and explain why each was rejected based on complexity, cost, performance, or scalability.",
+      "persona": "design_critic"
+    },
+    {
+      "severity": "major",
+      "category": "reliability",
+      "section": "risks",
+      "evidence": "User-entered task text must be treated as literal text.",
+      "issue": "Risks section is incomplete; it addresses only literal text handling and omits other important risks such as XSS, accessibility edge cases, performance on large task lists, and loss of state on page reload.",
+      "recommendation": "Expand the risks list to include security (XSS mitigation), accessibility (focus management, screen‑reader announcements), performance considerations, and user‑experience impact of state loss, with mitigation strategies for each.",
+      "persona": "design_critic"
+    },
+    {
+      "severity": "nit",
+      "category": "clarity",
+      "section": "design",
+      "evidence": "<option>High</option>\n        <option selected>Medium</option>\n        <option>Low</option>",
+      "issue": "Priority <option> elements lack explicit value attributes, relying on inner text which could cause inconsistencies if display text changes.",
+      "recommendation": "Add value attributes to each option (e.g., <option value=\"High\">High</option>) to decouple display text from the underlying value.",
+      "persona": "design_critic"
+    }
+  ],
+  "remaining_major_findings": 2,
+  "validation_errors": [
+    {
+      "stage": "review_0_design_critic",
+      "attempt": 1,
+      "message": "finding.category is unsupported"
+    }
+  ],
+  "errors": [],
+  "review_mode": "legacy",
+  "grounded_reviews": {},
+  "mode": "live",
+  "model": "gpt-oss-120b",
+  "attempts": 3
+}

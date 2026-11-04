@@ -1,0 +1,9 @@
+{
+  "attempts": 1,
+  "usage": null,
+  "elapsed_seconds": 120.05,
+  "requested_model": "gpt-oss-120b",
+  "resolved_models": [],
+  "routes": [],
+  "generation_seconds": 120.03
+}

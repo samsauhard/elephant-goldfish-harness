@@ -1,0 +1,24 @@
+{
+  "date": "2026-11-03",
+  "note": "Real browser checks on the local preview. The long-title test was added after reviewer feedback and is exploratory. This is not general model accuracy.",
+  "results": [
+    {
+      "version": "A",
+      "desktop": "10 / 10 checks passed · tested at 837 px\n✓\nThree initial tasks and accurate counts\n✓\nAdd task updates the list and counters\n✓\nBlank titles are rejected\n✓\nComplete task updates both counters\n✓\nDone filter shows only completed tasks\n✓\nActive filter excludes completed tasks\n✓\nSearch combines with filter, ignoring case\n✓\nDeletion after filtering targets the correct task\n✓\nTask titles render as literal text\n✓\nNo horizontal page overflow at this width",
+      "mobile": "10 / 10 checks passed · tested at 390 px\n✓\nThree initial tasks and accurate counts\n✓\nAdd task updates the list and counters\n✓\nBlank titles are rejected\n✓\nComplete task updates both counters\n✓\nDone filter shows only completed tasks\n✓\nActive filter excludes completed tasks\n✓\nSearch combines with filter, ignoring case\n✓\nDeletion after filtering targets the correct task\n✓\nTask titles render as literal text\n✓\nNo horizontal page overflow at this width",
+      "stress": "FAIL — Long unbroken title stays within the viewport. Tested at 390 px. Content width 1679 px exceeds viewport 390 px"
+    },
+    {
+      "version": "B",
+      "desktop": "10 / 10 checks passed · tested at 837 px\n✓\nThree initial tasks and accurate counts\n✓\nAdd task updates the list and counters\n✓\nBlank titles are rejected\n✓\nComplete task updates both counters\n✓\nDone filter shows only completed tasks\n✓\nActive filter excludes completed tasks\n✓\nSearch combines with filter, ignoring case\n✓\nDeletion after filtering targets the correct task\n✓\nTask titles render as literal text\n✓\nNo horizontal page overflow at this width",
+      "mobile": "10 / 10 checks passed · tested at 390 px\n✓\nThree initial tasks and accurate counts\n✓\nAdd task updates the list and counters\n✓\nBlank titles are rejected\n✓\nComplete task updates both counters\n✓\nDone filter shows only completed tasks\n✓\nActive filter excludes completed tasks\n✓\nSearch combines with filter, ignoring case\n✓\nDeletion after filtering targets the correct task\n✓\nTask titles render as literal text\n✓\nNo horizontal page overflow at this width",
+      "stress": "FAIL — Long unbroken title stays within the viewport. Tested at 390 px. Content width 1679 px exceeds viewport 390 px"
+    },
+    {
+      "version": "C",
+      "desktop": "10 / 10 checks passed · tested at 837 px\n✓\nThree initial tasks and accurate counts\n✓\nAdd task updates the list and counters\n✓\nBlank titles are rejected\n✓\nComplete task updates both counters\n✓\nDone filter shows only completed tasks\n✓\nActive filter excludes completed tasks\n✓\nSearch combines with filter, ignoring case\n✓\nDeletion after filtering targets the correct task\n✓\nTask titles render as literal text\n✓\nNo horizontal page overflow at this width",
+      "mobile": "10 / 10 checks passed · tested at 390 px\n✓\nThree initial tasks and accurate counts\n✓\nAdd task updates the list and counters\n✓\nBlank titles are rejected\n✓\nComplete task updates both counters\n✓\nDone filter shows only completed tasks\n✓\nActive filter excludes completed tasks\n✓\nSearch combines with filter, ignoring case\n✓\nDeletion after filtering targets the correct task\n✓\nTask titles render as literal text\n✓\nNo horizontal page overflow at this width",
+      "stress": "PASS — Long unbroken title stays within the viewport. Tested at 390 px."
+    }
+  ]
+}

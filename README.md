@@ -28,6 +28,18 @@ The direct path still uses common credential loading, API-envelope checks, reque
 
 See the [three-approach guide and complete comparison](docs/three-approaches.md). The [interactive comparison website source](site/README.md) is included and can be served locally without model calls.
 
+## Three versions of a working webpage
+
+The [Daymark build comparison](site/buildoff/README.md) applies the three workflows to a small task planner. Try the saved pages, choose a favorite before revealing the methods, and run the same browser checks on each. The source includes all three standalone HTML files, the brief, reviewer findings, code differences, request metrics, and the recorded browser results. Serving these files requires no API key or model calls.
+
+```powershell
+python -m http.server 8765 --bind 127.0.0.1 --directory site
+```
+
+Open <http://127.0.0.1:8765/buildoff/> for the webpage experiment, or <http://127.0.0.1:8765/> for the earlier design-review benchmark. Stop the server with Ctrl+C.
+
+All three pages passed the ten original interaction checks at desktop and mobile widths. Grounded EGM also passed an exploratory long-title overflow check that direct generation and original EGM failed. This is one shared draft and one trial with unequal effort, not evidence of general superiority. See the [method, results, and limitations](docs/webpage-buildoff.md).
+
 ## What Elephant-Goldfish means
 
 [Google's Elephant-Goldfish Model (EGM)](https://github.com/google/elephant-goldfish-model) is a software design/review workflow and collection of agent skills, not a model checkpoint or inference API.
@@ -176,6 +188,7 @@ The [grounded-mode results](docs/grounded-benchmark.md) show the tradeoff: the s
 | `harness_lab/__main__.py` | Reproducible runs, configuration, seeded evaluation |
 | `tests/` | Isolation, failure injection, budget enforcement, malformed-output behavior |
 | `site/` | Static three-approach comparison, recorded metrics, and inventory walkthrough |
+| `site/buildoff/` | Three generated task-planner pages, interactive checks, reviews, and recorded results |
 
 Further evaluation requires a held-out task set comparing author-only designs with reviewed designs, using a fixed model and independent human scoring. Potential extensions include persistent checkpoints and a trace viewer; changes should address observed failures and include reproducible measurements.
 

@@ -1,0 +1,17 @@
+{
+  "attempts": 1,
+  "usage": {
+    "prompt_tokens": 578,
+    "completion_tokens": 4269,
+    "total_tokens": 4847
+  },
+  "elapsed_seconds": 109.64,
+  "requested_model": "gpt-oss-120b",
+  "resolved_models": [
+    "@cf/openai/gpt-oss-120b"
+  ],
+  "routes": [
+    "cloudflare/@cf/openai/gpt-oss-120b"
+  ],
+  "generation_seconds": 109.55
+}

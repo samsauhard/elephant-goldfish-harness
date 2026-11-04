@@ -1,0 +1,47 @@
+{
+  "status": "generated",
+  "review": {
+    "attempts": 3,
+    "usage": {
+      "prompt_tokens": 16739,
+      "completion_tokens": 4728,
+      "total_tokens": 21467
+    },
+    "elapsed_seconds": 189.12,
+    "requested_model": "gpt-oss-120b",
+    "resolved_models": [
+      "@cf/openai/gpt-oss-120b"
+    ],
+    "routes": [
+      "cloudflare/@cf/openai/gpt-oss-120b"
+    ],
+    "generation_seconds": 155.48
+  },
+  "revision": {
+    "attempts": 1,
+    "usage": {
+      "prompt_tokens": 4115,
+      "completion_tokens": 3058,
+      "total_tokens": 7173
+    },
+    "elapsed_seconds": 115.22,
+    "requested_model": "gpt-oss-120b",
+    "resolved_models": [
+      "openai/gpt-oss-120b"
+    ],
+    "routes": [
+      "groq/openai/gpt-oss-120b"
+    ],
+    "generation_seconds": 67.38
+  },
+  "attempts": 4,
+  "elapsed_seconds": 304.36,
+  "total_tokens": 28640,
+  "review_status": "needs_attention",
+  "review_corrections": 1,
+  "review_findings": 3,
+  "models": [
+    "@cf/openai/gpt-oss-120b",
+    "openai/gpt-oss-120b"
+  ]
+}

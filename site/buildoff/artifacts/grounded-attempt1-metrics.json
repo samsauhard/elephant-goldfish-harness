@@ -1,0 +1,11 @@
+{
+  "attempts": 2,
+  "usage": null,
+  "elapsed_seconds": 79.92,
+  "requested_model": "gpt-oss-120b",
+  "resolved_models": [],
+  "routes": [],
+  "generation_seconds": 19.97,
+  "status": "review_failed",
+  "failure_reason": "execution_failed"
+}
